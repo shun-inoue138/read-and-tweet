@@ -16,3 +16,5 @@ export type CompletedTask = BaseTask & {
   passedTime: number;
   isCompleted: true;
 };
+
+export type Task = IncompletedTask | CompletedTask;

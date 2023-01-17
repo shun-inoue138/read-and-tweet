@@ -10,15 +10,6 @@
       "isCompleted": false
     },
     {
-      "id": 2,
-      "title": "Task 2",
-      "randomNote": "Note 2",
-      "dueDate": "2021-01-01",
-      "postContent": "Post 2",
-      "categories": ["Category 2", "Category 4"],
-      "isCompleted": false
-    },
-    {
       "id": 3,
       "title": "Task 3",
       "randomNote": "Note 3",
