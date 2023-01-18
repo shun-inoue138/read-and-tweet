@@ -3,6 +3,7 @@ import React from "react";
 import { editTask, useGetTask } from "src/api/tasksAPI";
 import { useTaskEditForm } from "src/hooks/useTaskEditForm";
 import { IncompletedTask, Task } from "src/utils/types/Task";
+import { myToast } from "src/utils/functions/toastWrapper";
 
 const edit = () => {
   const router = useRouter();
@@ -44,16 +45,17 @@ const edit = () => {
         />
 
         <button
-          //エラー対応
           onClick={handleSubmit((data) => {
             console.log(data);
             editTask(id, data)
               .then(() => {
                 reset(data);
                 router.push("/");
+                myToast("タスクを編集しました", "success");
               })
               .catch((error) => {
                 console.log(error);
+                myToast("タスクの編集に失敗しました", "error");
               });
           })}
         >
