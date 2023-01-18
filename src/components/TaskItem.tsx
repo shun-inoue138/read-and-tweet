@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { deleteTask, useGetAllTasks } from "src/api/tasksAPI";
 import { CompletedTask, IncompletedTask } from "src/utils/types/Task";
@@ -7,6 +8,7 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
   //props.isCompletedの値により異なるjsxを返す
   //todo:共通部分のコンポーネント化(TaskItemBase)
   const { mutate } = useGetAllTasks();
+  const router = useRouter();
   if (!props.isCompleted) {
     const { id, title, randomNote, dueDate, postContent, categories } = props;
     return (
@@ -14,10 +16,9 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
         未完了
         <Card>
           <h2>{title}</h2>
-          <div className="flex gap-3">
-            <p>{randomNote}</p>
-            <button>編集</button>
-          </div>
+
+          <p>{randomNote}</p>
+
           <span>{dueDate}</span>
           <p>{postContent}</p>
           <ul>
@@ -33,6 +34,21 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
           }}
         >
           削除
+        </button>
+        <button
+          onClick={() => {
+            router.push(
+              {
+                pathname: `/tasks/${id}/edit`,
+                query: {
+                  id,
+                },
+              },
+              `/tasks/${id}/edit`
+            );
+          }}
+        >
+          編集
         </button>
       </section>
     );
