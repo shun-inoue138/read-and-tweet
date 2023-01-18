@@ -10,11 +10,13 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
   const { mutate } = useGetAllTasks();
   const router = useRouter();
   if (!props.isCompleted) {
-    const { id, title, randomNote, dueDate, postContent, categories } = props;
+    const { url, id, title, randomNote, dueDate, postContent, categories } =
+      props;
     return (
       <section>
         未完了
         <Card>
+          <a href={url}>{url}</a>
           <h2>{title}</h2>
 
           <p>{randomNote}</p>
@@ -54,6 +56,7 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
     );
   } else {
     const {
+      url,
       title,
       randomNote,
       postContent,

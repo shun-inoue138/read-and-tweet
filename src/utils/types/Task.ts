@@ -1,4 +1,5 @@
 type BaseTask = {
+  url: string;
   id: number;
   title: string;
   randomNote: string;

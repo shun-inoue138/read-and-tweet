@@ -26,6 +26,13 @@ const edit = () => {
       <form>
         <input
           type="text"
+          {...register("url", {
+            required: "URLは必須です",
+          })}
+          defaultValue={task.url}
+        />
+        <input
+          type="text"
           {...register("title", {
             required: "タイトルは必須です",
           })}
