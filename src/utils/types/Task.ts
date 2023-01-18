@@ -1,4 +1,5 @@
 type BaseTask = {
+  url: string;
   id: number;
   title: string;
   randomNote: string;
@@ -18,13 +19,3 @@ export type CompletedTask = BaseTask & {
 };
 
 export type Task = IncompletedTask | CompletedTask;
-
-const task: Task = {
-  id: 1,
-  title: "タイトル",
-  randomNote: "雑記",
-  dueDate: "2021-08-01",
-  categories: ["カテゴリー"],
-  postContent: "ツイート内容",
-  isCompleted: false,
-};
