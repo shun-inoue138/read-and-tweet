@@ -16,3 +16,15 @@ export type CompletedTask = BaseTask & {
   passedTime: number;
   isCompleted: true;
 };
+
+export type Task = IncompletedTask | CompletedTask;
+
+const task: Task = {
+  id: 1,
+  title: "タイトル",
+  randomNote: "雑記",
+  dueDate: "2021-08-01",
+  categories: ["カテゴリー"],
+  postContent: "ツイート内容",
+  isCompleted: false,
+};
