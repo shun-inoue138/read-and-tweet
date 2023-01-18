@@ -1,6 +1,6 @@
 import React from "react";
 import { useGetAllTasks } from "src/api/tasksAPI";
-import { Task } from "src/utils/types/Task";
+
 import useSWR from "swr";
 import TaskItem from "./TaskItem";
 
