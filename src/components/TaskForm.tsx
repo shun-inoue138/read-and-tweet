@@ -26,7 +26,7 @@ const TaskForm = (props) => {
     if (formType === "edit") {
       editTask(id, data)
         .then(() => {
-          router.push("/");
+          router.push("/tasks");
           myToast("タスクを編集しました", "success");
         })
         .catch((error) => {
@@ -36,7 +36,7 @@ const TaskForm = (props) => {
     } else if (formType === "create") {
       createTask(data)
         .then(() => {
-          router.push("/");
+          router.push("/tasks");
           myToast("タスクを作成しました", "success");
         })
         .catch((error) => {
