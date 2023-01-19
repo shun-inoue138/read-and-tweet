@@ -1,19 +1,39 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { editTask, useGetTask } from "src/api/tasksAPI";
+import {
+  createCategory,
+  editTask,
+  useGetCategoryList,
+  useGetTask,
+} from "src/api/tasksAPI";
 import { useTaskEditForm } from "src/hooks/useTaskEditForm";
 import { IncompletedTask, Task } from "src/utils/types/Task";
 import { myToast } from "src/utils/functions/toastWrapper";
+import { useFieldArray, useForm, Controller } from "react-hook-form";
+import { useModal } from "src/hooks/useModal";
+import { mutate } from "swr";
 
 const edit = () => {
   const router = useRouter();
-
   const { id: stringId } = router.query;
   const id = Number(stringId);
-  const { task, isLoading, error } = useGetTask(id);
+  const {
+    register,
+    handleSubmit,
+    errors,
+    append,
+    remove,
+    task,
+    isLoading,
+    error,
+    fields,
+  } = useTaskEditForm(id);
+  const { categoryList, mutate } = useGetCategoryList();
 
-  const { register, handleSubmit, getValues, reset, errors } =
-    useTaskEditForm(task);
+  const { MyModal, openModal, closeModal } = useModal();
+
+  const categoryInputRef = React.useRef<HTMLInputElement>(null);
+
   if (isLoading) {
     return <p>loading...</p>;
   } else if (error) {
@@ -23,6 +43,7 @@ const edit = () => {
   }
   return (
     <div>
+      {/* todo:formの中身をコンポーネント化する。 */}
       <form>
         <input
           type="text"
@@ -51,12 +72,64 @@ const edit = () => {
           defaultValue={task.postContent}
         />
 
+        <ul>
+          {fields.map((field, index) => {
+            //<select>のdefaultValueを取得するために、fieldを変形。
+            const fieldValues = Object.values(field);
+            fieldValues.pop();
+            const defaultValue = fieldValues.join("");
+
+            return (
+              <li key={field.id}>
+                <select
+                  defaultValue={defaultValue}
+                  {...register(`categories.${index}` as const)}
+                >
+                  <option value="">選択してください</option>
+                  {categoryList?.map((item) => {
+                    return (
+                      <option key={item.id} value={item.name}>
+                        {item.name}
+                      </option>
+                    );
+                  })}
+                </select>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    remove(index);
+                  }}
+                >
+                  削除
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            append({ name: "" });
+          }}
+        >
+          カテゴリーを増やす
+        </button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            openModal();
+          }}
+        >
+          新規カテゴリーを追加
+        </button>
+
         <button
           onClick={handleSubmit((data) => {
-            console.log(data);
+            console.log({ data });
+
             editTask(id, data)
               .then(() => {
-                reset(data);
                 router.push("/");
                 myToast("タスクを編集しました", "success");
               })
@@ -69,6 +142,29 @@ const edit = () => {
           完了
         </button>
       </form>
+      <MyModal>
+        <div>
+          <input ref={categoryInputRef} type="text" />
+          <button
+            onClick={() => {
+              const categoryName = categoryInputRef.current?.value as string;
+              categoryName &&
+                createCategory(categoryName)
+                  .then(() => {
+                    myToast("カテゴリーを追加しました", "success");
+                    closeModal();
+                    mutate();
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    myToast("カテゴリーの追加に失敗しました", "error");
+                  });
+            }}
+          >
+            追加
+          </button>
+        </div>
+      </MyModal>
     </div>
   );
 };

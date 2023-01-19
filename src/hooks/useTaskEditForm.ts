@@ -1,4 +1,6 @@
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { useFieldArray, useForm } from "react-hook-form";
+import { useGetTask } from "src/api/tasksAPI";
 import { IncompletedTask, Task } from "src/utils/types/Task";
 
 // {
@@ -10,17 +12,33 @@ import { IncompletedTask, Task } from "src/utils/types/Task";
 //   categories,
 // },
 
-export const useTaskEditForm = (defaultValue: Task | undefined) => {
+export const useTaskEditForm = (id: number) => {
   const {
     register,
+    control,
     handleSubmit,
     getValues,
     formState: { errors },
     reset,
   } = useForm<Task>({
     mode: "onChange",
-    defaultValues: defaultValue ? { ...defaultValue } : undefined,
+    reValidateMode: "onChange",
+    // defaultValues: task,
   });
+  const { task, isLoading, error } = useGetTask(id, reset);
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "categories",
+  });
+
+  // const { register, control, handleSubmit, reset, trigger, setError } = useForm({
+  //   // defaultValues: {}; you can populate the fields by this attribute
+  // });
+  // const { fields, append, remove } = useFieldArray({
+  //   control,
+  //   name: "test"
+  // });
 
   // const inputArray = [
   //   {
@@ -70,5 +88,15 @@ export const useTaskEditForm = (defaultValue: Task | undefined) => {
   //   },
   // ];
 
-  return { register, handleSubmit, getValues, errors, reset };
+  return {
+    register,
+    handleSubmit,
+    errors,
+    isLoading,
+    fields,
+    append,
+    remove,
+    task,
+    error,
+  };
 };
