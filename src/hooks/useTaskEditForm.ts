@@ -23,7 +23,6 @@ export const useTaskEditForm = (id: number) => {
   } = useForm<Task>({
     mode: "onChange",
     reValidateMode: "onChange",
-    // defaultValues: task,
   });
   const { task, isLoading, error } = useGetTask(id, reset);
 
@@ -31,6 +30,42 @@ export const useTaskEditForm = (id: number) => {
     control,
     name: "categories",
   });
+
+  const TaskEditObject = {
+    URL: {
+      type: "text",
+      registerReturn: register("url", {
+        required: "URLは必須です",
+      }),
+      errors: errors.url?.message,
+      defaultValue: task?.url,
+    },
+    title: {
+      type: "text",
+      registerReturn: register("title", {
+        required: "タイトルは必須です",
+      }),
+      errors: errors.title?.message,
+      defaultValue: task?.title,
+    },
+    randomNote: {
+      registerReturn: register("randomNote"),
+      errors: errors.randomNote?.message,
+      defaultValue: task?.randomNote,
+    },
+    dueDate: {
+      type: "date",
+      registerReturn: register("dueDate"),
+      errors: errors.dueDate?.message,
+      defaultValue: task?.dueDate,
+    },
+    postContent: {
+      type: "text",
+      registerReturn: register("postContent"),
+      errors: errors.postContent?.message,
+      defaultValue: task?.postContent,
+    },
+  };
 
   // const { register, control, handleSubmit, reset, trigger, setError } = useForm({
   //   // defaultValues: {}; you can populate the fields by this attribute
@@ -98,5 +133,6 @@ export const useTaskEditForm = (id: number) => {
     remove,
     task,
     error,
+    TaskEditObject,
   };
 };
