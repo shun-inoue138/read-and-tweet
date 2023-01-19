@@ -4,7 +4,7 @@ import { useGetTask } from "src/api/tasksAPI";
 import { taskObjectFactory } from "src/utils/functions/taskObjectFactory";
 import { IncompletedTask, Task } from "src/utils/types/Task";
 
-export const useTaskEditForm = (id: number) => {
+export const useTaskCreateForm = () => {
   const {
     register,
     control,
@@ -16,25 +16,21 @@ export const useTaskEditForm = (id: number) => {
     mode: "onChange",
     reValidateMode: "onChange",
   });
-  const { task, isLoading, error } = useGetTask(id, reset);
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "categories",
   });
 
-  const TaskEditObject = taskObjectFactory(register, errors, task);
+  const TaskCreateObject = taskObjectFactory(register, errors);
 
   return {
     register,
     handleSubmit,
     errors,
-    isLoading,
     fields,
     append,
     remove,
-    task,
-    error,
-    TaskEditObject,
+    TaskCreateObject,
   };
 };
