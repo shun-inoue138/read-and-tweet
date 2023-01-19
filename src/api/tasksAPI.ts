@@ -10,10 +10,14 @@ export const useGetAllTasks = () => {
   const { data, error, mutate, isLoading } = useSWR<Task[]>(url, fetcher);
   return { tasks: data, error, mutate, isLoading };
 };
-export const useGetTask = (id: number) => {
+//useFormとともに使用する場合、resetを受け取って実行する
+export const useGetTask = (id: number, reset?) => {
   const url = `/tasks/${id}`;
   const fetcher: Fetcher<Task, string> = () => {
-    return axiosClient.get(url).then((res) => res.data);
+    return axiosClient.get(url).then((res) => {
+      reset && reset(res.data);
+      return res.data;
+    });
   };
   const { data, error, mutate, isLoading } = useSWR<Task>(url, fetcher);
   return { task: data, error, mutate, isLoading };

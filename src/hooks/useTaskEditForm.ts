@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { IncompletedTask, Task } from "src/utils/types/Task";
 
 // {
@@ -13,6 +13,7 @@ import { IncompletedTask, Task } from "src/utils/types/Task";
 export const useTaskEditForm = (defaultValue: Task | undefined) => {
   const {
     register,
+    control,
     handleSubmit,
     getValues,
     formState: { errors },
@@ -21,6 +22,14 @@ export const useTaskEditForm = (defaultValue: Task | undefined) => {
     mode: "onChange",
     defaultValues: defaultValue ? { ...defaultValue } : undefined,
   });
+
+  // const { register, control, handleSubmit, reset, trigger, setError } = useForm({
+  //   // defaultValues: {}; you can populate the fields by this attribute
+  // });
+  // const { fields, append, remove } = useFieldArray({
+  //   control,
+  //   name: "test"
+  // });
 
   // const inputArray = [
   //   {
@@ -70,5 +79,12 @@ export const useTaskEditForm = (defaultValue: Task | undefined) => {
   //   },
   // ];
 
-  return { register, handleSubmit, getValues, errors, reset };
+  return {
+    register,
+    handleSubmit,
+    getValues,
+    errors,
+    reset,
+    control,
+  };
 };

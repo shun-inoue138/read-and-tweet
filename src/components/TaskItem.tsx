@@ -12,6 +12,8 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
   if (!props.isCompleted) {
     const { url, id, title, randomNote, dueDate, postContent, categories } =
       props;
+    console.log({ categories });
+
     return (
       <section>
         未完了
@@ -42,11 +44,11 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
             router.push(
               {
                 pathname: `/tasks/${id}/edit`,
-                query: {
-                  id,
-                },
-              },
-              `/tasks/${id}/edit`
+                // query: {
+                //   id,
+                // },
+              }
+              // `/tasks/${id}/edit`
             );
           }}
         >
