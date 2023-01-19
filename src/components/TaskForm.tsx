@@ -1,5 +1,5 @@
 import React from "react";
-import { editTask } from "src/api/tasksAPI";
+import { createTask, editTask } from "src/api/tasksAPI";
 import { myToast } from "src/utils/functions/toastWrapper";
 
 const TaskForm = (props) => {
@@ -18,24 +18,52 @@ const TaskForm = (props) => {
     remove,
     fields,
     openModal,
+    formType,
   } = props;
   console.log(title);
+
+  const onSubmit = (data) => {
+    if (formType === "edit") {
+      editTask(id, data)
+        .then(() => {
+          router.push("/");
+          myToast("タスクを編集しました", "success");
+        })
+        .catch((error) => {
+          console.log(error);
+          myToast("タスクの編集に失敗しました", "error");
+        });
+    } else if (formType === "create") {
+      createTask(data)
+        .then(() => {
+          router.push("/");
+          myToast("タスクを作成しました", "success");
+        })
+        .catch((error) => {
+          console.log(error);
+          myToast("タスクの作成に失敗しました", "error");
+        });
+    }
+  };
 
   return (
     <form>
       <input
+        placeholder={URL.placeholder}
         type={URL.type}
         {...URL.registerReturn}
         defaultValue={URL.defaultValue}
       />
       {URL.errors && <p>{URL.errors}</p>}
       <input
+        placeholder={title.placeholder}
         type={title.type}
         {...title.registerReturn}
         defaultValue={title.defaultValue}
       />
       {title.errors && <p>{title.errors}</p>}
       <textarea
+        placeholder={randomNote.placeholder}
         {...randomNote.registerReturn}
         defaultValue={randomNote.defaultValue}
       />
@@ -46,6 +74,7 @@ const TaskForm = (props) => {
         defaultValue={dueDate.defaultValue}
       />
       <textarea
+        placeholder={postContent.placeholder}
         {...postContent.registerReturn}
         defaultValue={postContent.defaultValue}
       />
@@ -101,23 +130,7 @@ const TaskForm = (props) => {
         新規カテゴリーを追加
       </button>
 
-      <button
-        onClick={handleSubmit((data) => {
-          console.log({ data });
-
-          editTask(id, data)
-            .then(() => {
-              router.push("/");
-              myToast("タスクを編集しました", "success");
-            })
-            .catch((error) => {
-              console.log(error);
-              myToast("タスクの編集に失敗しました", "error");
-            });
-        })}
-      >
-        完了
-      </button>
+      <button onClick={handleSubmit(onSubmit)}>完了</button>
     </form>
   );
 };

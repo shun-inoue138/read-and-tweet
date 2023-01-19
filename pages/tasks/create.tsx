@@ -1,54 +1,30 @@
 import { useRouter } from "next/router";
 import React from "react";
-import {
-  createCategory,
-  editTask,
-  useGetCategoryList,
-  useGetTask,
-} from "src/api/tasksAPI";
-import { useTaskEditForm } from "src/hooks/useTaskEditForm";
-import { IncompletedTask, Task } from "src/utils/types/Task";
-import { myToast } from "src/utils/functions/toastWrapper";
-import { useFieldArray, useForm, Controller } from "react-hook-form";
-import { useModal } from "src/hooks/useModal";
-import { mutate } from "swr";
+import { createCategory, useGetCategoryList } from "src/api/tasksAPI";
 import TaskForm from "src/components/TaskForm";
+import { useModal } from "src/hooks/useModal";
+import { useTaskCreateForm } from "src/hooks/useTaskCreateForm";
+import { myToast } from "src/utils/functions/toastWrapper";
 
-const edit = () => {
+const create = () => {
   const router = useRouter();
-  const { id: stringId } = router.query;
-  const id = Number(stringId);
   const {
     register,
     handleSubmit,
     errors,
+    fields,
     append,
     remove,
-    task,
-    isLoading,
-    error,
-    fields,
-    TaskEditObject,
-  } = useTaskEditForm(id);
+    TaskCreateObject,
+  } = useTaskCreateForm();
   const { categoryList, mutate } = useGetCategoryList();
-
   const { MyModal, openModal, closeModal } = useModal();
-
   const categoryInputRef = React.useRef<HTMLInputElement>(null);
 
-  if (isLoading) {
-    return <p>loading...</p>;
-  } else if (error) {
-    return <p>error</p>;
-  } else if (!task) {
-    return <p>task not found</p>;
-  }
   return (
     <div>
-      {/* todo:formの中身をコンポーネント化する。 */}
       <TaskForm
-        {...TaskEditObject}
-        id={id}
+        {...TaskCreateObject}
         handleSubmit={handleSubmit}
         router={router}
         register={register}
@@ -57,7 +33,7 @@ const edit = () => {
         remove={remove}
         fields={fields}
         openModal={openModal}
-        formType="edit"
+        formType="create"
       />
       <MyModal>
         <div>
@@ -86,4 +62,4 @@ const edit = () => {
   );
 };
 
-export default edit;
+export default create;
