@@ -24,6 +24,17 @@ export const useGetTask = (id: number, reset?) => {
   return { task: data, error, mutate, isLoading };
 };
 
+export const useGetCategoryList = () => {
+  const url = "/categoryList";
+  const fetcher: Fetcher<{ id: number; name: string }[], string> = () => {
+    return axiosClient.get(url).then((res) => res.data);
+  };
+  const { data, error, mutate, isLoading } = useSWR<
+    { id: number; name: string }[]
+  >(url, fetcher);
+  return { categoryList: data, error, mutate, isLoading };
+};
+
 export const deleteTask = (id: number) => {
   const url = `/tasks/${id}`;
   return axiosClient.delete(url);
