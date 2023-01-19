@@ -10,7 +10,8 @@ export const useGetAllTasks = () => {
   const { data, error, mutate, isLoading } = useSWR<Task[]>(url, fetcher);
   return { tasks: data, error, mutate, isLoading };
 };
-//useFormとともに使用する場合、resetを受け取って実行する
+
+//useFormとuseFieldArrayと併用する場合のみ引数にresetを渡す
 export const useGetTask = (id: number, reset?) => {
   const url = `/tasks/${id}`;
   const fetcher: Fetcher<Task, string> = () => {

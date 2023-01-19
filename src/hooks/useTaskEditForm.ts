@@ -1,4 +1,6 @@
+import { useRouter } from "next/router";
 import { useFieldArray, useForm } from "react-hook-form";
+import { useGetTask } from "src/api/tasksAPI";
 import { IncompletedTask, Task } from "src/utils/types/Task";
 
 // {
@@ -10,7 +12,7 @@ import { IncompletedTask, Task } from "src/utils/types/Task";
 //   categories,
 // },
 
-export const useTaskEditForm = (defaultValue: Task | undefined) => {
+export const useTaskEditForm = (id: number) => {
   const {
     register,
     control,
@@ -20,7 +22,14 @@ export const useTaskEditForm = (defaultValue: Task | undefined) => {
     reset,
   } = useForm<Task>({
     mode: "onChange",
-    defaultValues: defaultValue ? { ...defaultValue } : undefined,
+    reValidateMode: "onChange",
+    // defaultValues: task,
+  });
+  const { task, isLoading, error } = useGetTask(id, reset);
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "categories",
   });
 
   // const { register, control, handleSubmit, reset, trigger, setError } = useForm({
@@ -82,9 +91,12 @@ export const useTaskEditForm = (defaultValue: Task | undefined) => {
   return {
     register,
     handleSubmit,
-    getValues,
     errors,
-    reset,
-    control,
+    isLoading,
+    fields,
+    append,
+    remove,
+    task,
+    error,
   };
 };

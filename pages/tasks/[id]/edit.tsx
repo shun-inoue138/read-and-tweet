@@ -10,38 +10,17 @@ const edit = () => {
   const router = useRouter();
   const { id: stringId } = router.query;
   const id = Number(stringId);
-
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   getValues,
-  //   reset,
-  //   errors,
-  //   control,
-  //   //fix:pageを再起動するとfieldsが空になる
-
-  //   // = task?.categories.map((category) => ({ id: category })),
-  // } = useTaskEditForm(task);
-
   const {
     register,
-    control,
     handleSubmit,
-    getValues,
-    formState: { errors },
-    reset,
-  } = useForm<Task>({
-    mode: "onChange",
-    reValidateMode: "onChange",
-    // defaultValues: task,
-  });
-  const { task, isLoading, error } = useGetTask(id, reset);
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "categories",
-  });
-  console.log({ fields });
+    errors,
+    append,
+    remove,
+    task,
+    isLoading,
+    error,
+    fields,
+  } = useTaskEditForm(id);
 
   if (isLoading) {
     return <p>loading...</p>;
@@ -52,6 +31,7 @@ const edit = () => {
   }
   return (
     <div>
+      {/* todo:fromの中身をコンポーネント化する。 */}
       <form>
         <input
           type="text"
@@ -79,13 +59,7 @@ const edit = () => {
           {...register("postContent")}
           defaultValue={task.postContent}
         />
-        <ul className="flex gap-2">
-          {task.categories?.map((category) => (
-            <li key={category} className="text-xs bg-black text-white p-2">
-              {category}
-            </li>
-          ))}
-        </ul>
+
         <ul>
           {fields.map((field, index) => (
             <li key={field.id}>
@@ -112,7 +86,6 @@ const edit = () => {
 
             editTask(id, data)
               .then(() => {
-                reset(data);
                 router.push("/");
                 myToast("タスクを編集しました", "success");
               })
