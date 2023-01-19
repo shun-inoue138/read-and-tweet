@@ -13,6 +13,7 @@ import { useFieldArray, useForm, Controller } from "react-hook-form";
 import { useModal } from "src/hooks/useModal";
 import { mutate } from "swr";
 import TaskForm from "src/components/TaskForm";
+import InputModalContent from "src/components/InputModalContent";
 
 const edit = () => {
   const router = useRouter();
@@ -60,27 +61,7 @@ const edit = () => {
         formType="edit"
       />
       <MyModal>
-        <div>
-          <input ref={categoryInputRef} type="text" />
-          <button
-            onClick={() => {
-              const categoryName = categoryInputRef.current?.value as string;
-              categoryName &&
-                createCategory(categoryName)
-                  .then(() => {
-                    myToast("カテゴリーを追加しました", "success");
-                    closeModal();
-                    mutate();
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                    myToast("カテゴリーの追加に失敗しました", "error");
-                  });
-            }}
-          >
-            追加
-          </button>
-        </div>
+        <InputModalContent closeModal={closeModal} mutate={mutate} />
       </MyModal>
     </div>
   );
