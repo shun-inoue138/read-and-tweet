@@ -34,6 +34,10 @@ export const useGetCategoryList = () => {
   >(url, fetcher);
   return { categoryList: data, error, mutate, isLoading };
 };
+export const createCategory = (name: string) => {
+  const url = "/categoryList";
+  return axiosClient.post(url, { name });
+};
 
 export const deleteTask = (id: number) => {
   const url = `/tasks/${id}`;

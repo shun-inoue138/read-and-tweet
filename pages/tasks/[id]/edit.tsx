@@ -1,16 +1,20 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { editTask, useGetCategoryList, useGetTask } from "src/api/tasksAPI";
+import {
+  createCategory,
+  editTask,
+  useGetCategoryList,
+  useGetTask,
+} from "src/api/tasksAPI";
 import { useTaskEditForm } from "src/hooks/useTaskEditForm";
 import { IncompletedTask, Task } from "src/utils/types/Task";
 import { myToast } from "src/utils/functions/toastWrapper";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
+import { useModal } from "src/hooks/useModal";
+import { mutate } from "swr";
 
 const edit = () => {
   const router = useRouter();
-  const { categoryList } = useGetCategoryList();
-  console.log({ categoryList });
-
   const { id: stringId } = router.query;
   const id = Number(stringId);
   const {
@@ -24,7 +28,11 @@ const edit = () => {
     error,
     fields,
   } = useTaskEditForm(id);
-  console.log({ fields });
+  const { categoryList, mutate } = useGetCategoryList();
+
+  const { MyModal, openModal, closeModal } = useModal();
+
+  const categoryInputRef = React.useRef<HTMLInputElement>(null);
 
   if (isLoading) {
     return <p>loading...</p>;
@@ -35,7 +43,7 @@ const edit = () => {
   }
   return (
     <div>
-      {/* todo:fromの中身をコンポーネント化する。 */}
+      {/* todo:formの中身をコンポーネント化する。 */}
       <form>
         <input
           type="text"
@@ -73,7 +81,10 @@ const edit = () => {
 
             return (
               <li key={field.id}>
-                <select defaultValue={defaultValue}>
+                <select
+                  defaultValue={defaultValue}
+                  {...register(`categories.${index}` as const)}
+                >
                   <option value="">選択してください</option>
                   {categoryList?.map((item) => {
                     return (
@@ -91,8 +102,6 @@ const edit = () => {
                 >
                   削除
                 </button>
-                {/* クリックするとモーダルを表示して、カテゴリーをDbに追加、さらに自動的に追加したかてごりーを選択状態にする。それが無理なら手動選択を促す。 */}
-                <button>追加</button>
               </li>
             );
           })}
@@ -104,7 +113,15 @@ const edit = () => {
             append({ name: "" });
           }}
         >
-          追加
+          カテゴリーを増やす
+        </button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            openModal();
+          }}
+        >
+          新規カテゴリーを追加
         </button>
 
         <button
@@ -125,6 +142,29 @@ const edit = () => {
           完了
         </button>
       </form>
+      <MyModal>
+        <div>
+          <input ref={categoryInputRef} type="text" />
+          <button
+            onClick={() => {
+              const categoryName = categoryInputRef.current?.value as string;
+              categoryName &&
+                createCategory(categoryName)
+                  .then(() => {
+                    myToast("カテゴリーを追加しました", "success");
+                    closeModal();
+                    mutate();
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                    myToast("カテゴリーの追加に失敗しました", "error");
+                  });
+            }}
+          >
+            追加
+          </button>
+        </div>
+      </MyModal>
     </div>
   );
 };
