@@ -2,7 +2,7 @@ import React from "react";
 import { createCategory } from "src/api/tasksAPI";
 import { myToast } from "src/utils/functions/toastWrapper";
 
-const InputModalContent = ({ closeModal, mutate }) => {
+const CategoryModalContent = ({ closeModal, mutate }) => {
   const categoryInputRef = React.useRef<HTMLInputElement>(null);
 
   return (
@@ -30,4 +30,4 @@ const InputModalContent = ({ closeModal, mutate }) => {
   );
 };
 
-export default InputModalContent;
+export default CategoryModalContent;

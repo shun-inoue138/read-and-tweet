@@ -13,7 +13,7 @@ import { useFieldArray, useForm, Controller } from "react-hook-form";
 import { useModal } from "src/hooks/useModal";
 import { mutate } from "swr";
 import TaskForm from "src/components/TaskForm";
-import InputModalContent from "src/components/InputModalContent";
+import CategoryModalContent from "src/components/CategoryModalContent";
 
 const edit = () => {
   const router = useRouter();
@@ -61,7 +61,7 @@ const edit = () => {
         formType="edit"
       />
       <MyModal>
-        <InputModalContent closeModal={closeModal} mutate={mutate} />
+        <CategoryModalContent closeModal={closeModal} mutate={mutate} />
       </MyModal>
     </div>
   );

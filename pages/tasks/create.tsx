@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { createCategory, useGetCategoryList } from "src/api/tasksAPI";
-import InputModalContent from "src/components/InputModalContent";
+import CategoryModalContent from "src/components/CategoryModalContent";
 import TaskForm from "src/components/TaskForm";
 import { useModal } from "src/hooks/useModal";
 import { useTaskCreateForm } from "src/hooks/useTaskCreateForm";
@@ -36,7 +36,7 @@ const create = () => {
         formType="create"
       />
       <MyModal>
-        <InputModalContent closeModal={closeModal} mutate={mutate} />
+        <CategoryModalContent closeModal={closeModal} mutate={mutate} />
       </MyModal>
     </div>
   );
