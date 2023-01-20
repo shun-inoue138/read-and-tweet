@@ -6,7 +6,10 @@ import { completedTask, incompletedTask } from "src/utils/dummyData/tasks";
 
 const Tasks = () => {
   const [searchWord, setSearchWord] = React.useState("");
-  const [filterDueDays, setFilterDueDays] = React.useState(0);
+  const [filterDueDays, setFilterDueDays] = React.useState({
+    isFilter: false,
+    days: 0,
+  });
   const [isFilterByOverdue, setIsFilterByOverdue] = React.useState(false);
   return (
     <div>
@@ -14,6 +17,7 @@ const Tasks = () => {
         searchWord={searchWord}
         setSearchWord={setSearchWord}
         setFilterDueDays={setFilterDueDays}
+        filterDueDays={filterDueDays}
         isFilterByOverdue={isFilterByOverdue}
         setIsFilterByOverdue={setIsFilterByOverdue}
       />

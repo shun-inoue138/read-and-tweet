@@ -12,8 +12,8 @@ import TaskItem from "./TaskItem";
 const TaskItems = ({ searchWord, filterDueDays, isFilterByOverdue }) => {
   const { tasks, error, mutate, isLoading } = useGetAllTasks();
   let filteredTasks = filterTasksByWord(tasks, searchWord);
-  if (filterDueDays) {
-    filteredTasks = filterTasksByDueDate(filteredTasks, filterDueDays);
+  if (filterDueDays.isFilter) {
+    filteredTasks = filterTasksByDueDate(filteredTasks, filterDueDays.days);
   }
   if (isFilterByOverdue) {
     filteredTasks = filterTasksByOverDue(filteredTasks);

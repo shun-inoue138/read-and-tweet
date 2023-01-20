@@ -5,6 +5,7 @@ const Header = ({
   searchWord,
   setSearchWord,
   setFilterDueDays,
+  filterDueDays,
   isFilterByOverdue,
   setIsFilterByOverdue,
 }) => {
@@ -39,7 +40,10 @@ const Header = ({
       日以内のタスクのみ表示
       <button
         onClick={() => {
-          setFilterDueDays(inputDueDays);
+          setFilterDueDays({
+            isFilter: !filterDueDays.isFilter,
+            days: inputDueDays,
+          });
         }}
       >
         表示
