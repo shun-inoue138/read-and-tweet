@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { deleteTask, useGetAllTasks } from "src/api/tasksAPI";
+import { useModal } from "src/hooks/useModal";
 import { CompletedTask, IncompletedTask } from "src/utils/types/Task";
 import Button from "./Button";
 import Card from "./Card";
@@ -10,6 +11,7 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
   //todo:共通部分のコンポーネント化(TaskItemBase)
   const { mutate } = useGetAllTasks();
   const router = useRouter();
+  const { MyModal, openModal, closeModal } = useModal();
   if (!props.isCompleted) {
     const { url, id, title, randomNote, dueDate, postContent, categories } =
       props;
@@ -61,13 +63,16 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
               buttonColor="blue"
               className="ml-auto"
               onClick={() => {
-                alert("save and tweet");
+                openModal();
               }}
             >
               save and tweet
             </Button>
           </div>
         </Card>
+        <MyModal>
+          <textarea>{postContent}</textarea>
+        </MyModal>
       </section>
     );
   } else {
