@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { deleteTask, useGetAllTasks } from "src/api/tasksAPI";
 import { CompletedTask, IncompletedTask } from "src/utils/types/Task";
+import Button from "./Button";
 import Card from "./Card";
 
 const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
@@ -30,30 +31,43 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
               <li key={category}>{category}</li>
             ))}
           </ul>
+
+          <div className="mt-2 flex gap-2">
+            <Button
+              buttonColor="red"
+              onClick={() => {
+                deleteTask(id).then(() => mutate());
+              }}
+            >
+              削除
+            </Button>
+            <Button
+              buttonColor="green"
+              onClick={() => {
+                router.push(
+                  {
+                    pathname: `/tasks/${id}/edit`,
+                    // query: {
+                    //   id,
+                    // },
+                  }
+                  // `/tasks/${id}/edit`
+                );
+              }}
+            >
+              編集
+            </Button>
+            <Button
+              buttonColor="blue"
+              className="ml-auto"
+              onClick={() => {
+                alert("save and tweet");
+              }}
+            >
+              save and tweet
+            </Button>
+          </div>
         </Card>
-        <button
-          className="bg-red-500 text-white p-4"
-          onClick={() => {
-            deleteTask(id).then(() => mutate());
-          }}
-        >
-          削除
-        </button>
-        <button
-          onClick={() => {
-            router.push(
-              {
-                pathname: `/tasks/${id}/edit`,
-                // query: {
-                //   id,
-                // },
-              }
-              // `/tasks/${id}/edit`
-            );
-          }}
-        >
-          編集
-        </button>
       </section>
     );
   } else {
