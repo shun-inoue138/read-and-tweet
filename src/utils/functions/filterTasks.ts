@@ -25,7 +25,8 @@ export const filterTasksByDueDate = (
     const diffDays = diff / (1000 * 60 * 60 * 24);
     console.log(diffDays);
 
-    return diffDays <= dueDays;
+    //期限切れのタスクは対象外とする。
+    return diffDays <= dueDays && diffDays >= 0;
   });
 };
 export const filterTasksByOverDue = (tasks: Task[]) => {
