@@ -14,3 +14,17 @@ export const filterTasksByWord = (
     );
   });
 };
+export const filterTasksByDueDate = (
+  tasks: Task[],
+  dueDays: number
+): Task[] => {
+  return tasks.filter((task) => {
+    const now = new Date();
+    const dueDate = new Date(task.dueDate);
+    const diff = dueDate.getTime() - now.getTime();
+    const diffDays = diff / (1000 * 60 * 60 * 24);
+    console.log(diffDays);
+
+    return diffDays <= dueDays;
+  });
+};

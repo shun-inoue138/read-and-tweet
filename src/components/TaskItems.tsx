@@ -1,13 +1,19 @@
 import React from "react";
 import { useGetAllTasks } from "src/api/tasksAPI";
-import { filterTasksByWord } from "src/utils/functions/filterTasksByWord";
+import {
+  filterTasksByDueDate,
+  filterTasksByWord,
+} from "src/utils/functions/filterTasks";
 
 import useSWR from "swr";
 import TaskItem from "./TaskItem";
 
-const TaskItems = ({ searchWord }) => {
+const TaskItems = ({ searchWord, filterDueDays }) => {
   const { tasks, error, mutate, isLoading } = useGetAllTasks();
-  const filteredTasks = filterTasksByWord(tasks, searchWord);
+  let filteredTasks = filterTasksByWord(tasks, searchWord);
+  if (filterDueDays) {
+    filteredTasks = filterTasksByDueDate(filteredTasks, filterDueDays);
+  }
 
   return (
     <div>

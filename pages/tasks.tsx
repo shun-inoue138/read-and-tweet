@@ -6,10 +6,15 @@ import { completedTask, incompletedTask } from "src/utils/dummyData/tasks";
 
 const Tasks = () => {
   const [searchWord, setSearchWord] = React.useState("");
+  const [filterDueDays, setFilterDueDays] = React.useState(0);
   return (
     <div>
-      <Header searchWord={searchWord} setSearchWord={setSearchWord} />
-      <TaskItems searchWord={searchWord} />
+      <Header
+        searchWord={searchWord}
+        setSearchWord={setSearchWord}
+        setFilterDueDays={setFilterDueDays}
+      />
+      <TaskItems searchWord={searchWord} filterDueDays={filterDueDays} />
     </div>
   );
 };
