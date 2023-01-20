@@ -1,5 +1,6 @@
 import { Router, useRouter } from "next/router";
 import React from "react";
+import { Input_Due_Days } from "src/utils/const";
 
 const Header = ({
   searchWord,
@@ -10,7 +11,8 @@ const Header = ({
   setIsFilterByOverdue,
 }) => {
   const router = useRouter();
-  const [inputDueDays, setInputDueDays] = React.useState<number>(0);
+  const [inputDueDays, setInputDueDays] =
+    React.useState<number>(Input_Due_Days);
   return (
     <div className=" h-12 bg-slate-400">
       <input
@@ -33,6 +35,7 @@ const Header = ({
         value={inputDueDays}
         max={100}
         min={1}
+        //todo:設定画面でデフォルト値を設定できるようにする
         onChange={(e) => {
           setInputDueDays(Number(e.target.value));
         }}
