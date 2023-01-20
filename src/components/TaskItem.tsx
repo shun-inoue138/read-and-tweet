@@ -5,6 +5,7 @@ import { useModal } from "src/hooks/useModal";
 import { CompletedTask, IncompletedTask } from "src/utils/types/Task";
 import Button from "./Button";
 import Card from "./Card";
+import TweetTextArea from "./TweetTextArea";
 import UnderstandingRateStars from "./UnderstandingRateStars";
 
 const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
@@ -13,6 +14,7 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
   const { mutate } = useGetAllTasks();
   const router = useRouter();
   const { MyModal, openModal, closeModal } = useModal();
+  const TweetTextAreaEL = React.useRef<HTMLTextAreaElement>(null);
   if (!props.isCompleted) {
     const { url, id, title, randomNote, dueDate, postContent, categories } =
       props;
@@ -72,8 +74,19 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
           </div>
         </Card>
         <MyModal>
-          <textarea>{postContent}</textarea>
+          <TweetTextArea ref={TweetTextAreaEL}>{postContent}</TweetTextArea>
           <UnderstandingRateStars />
+          <div className="flex justify-end">
+            <Button
+              buttonColor="blue"
+              // todo:140字以上はdisabledにする
+              onClick={() => {
+                console.log(TweetTextAreaEL.current?.value.length);
+              }}
+            >
+              投稿する
+            </Button>
+          </div>
         </MyModal>
       </section>
     );
