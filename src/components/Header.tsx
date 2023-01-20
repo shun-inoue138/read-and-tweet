@@ -1,7 +1,13 @@
 import { Router, useRouter } from "next/router";
 import React from "react";
 
-const Header = ({ searchWord, setSearchWord, setFilterDueDays }) => {
+const Header = ({
+  searchWord,
+  setSearchWord,
+  setFilterDueDays,
+  isFilterByOverdue,
+  setIsFilterByOverdue,
+}) => {
   const router = useRouter();
   const [inputDueDays, setInputDueDays] = React.useState<number>(0);
   return (
@@ -37,6 +43,13 @@ const Header = ({ searchWord, setSearchWord, setFilterDueDays }) => {
         }}
       >
         表示
+      </button>
+      <button
+        onClick={() => {
+          setIsFilterByOverdue(!isFilterByOverdue);
+        }}
+      >
+        期限切れのみ
       </button>
     </div>
   );
