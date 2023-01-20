@@ -5,6 +5,7 @@ import { useModal } from "src/hooks/useModal";
 import { CompletedTask, IncompletedTask } from "src/utils/types/Task";
 import Button from "./Button";
 import Card from "./Card";
+import UnderstandingRateStars from "./UnderstandingRateStars";
 
 const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
   //props.isCompletedの値により異なるjsxを返す
@@ -72,6 +73,7 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
         </Card>
         <MyModal>
           <textarea>{postContent}</textarea>
+          <UnderstandingRateStars />
         </MyModal>
       </section>
     );
