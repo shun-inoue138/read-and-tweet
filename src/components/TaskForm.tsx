@@ -1,5 +1,6 @@
 import React from "react";
 import { createTask, editTask } from "src/api/tasksAPI";
+import { getAfter7Days } from "src/utils/functions/getAfter7Days";
 import { myToast } from "src/utils/functions/toastWrapper";
 
 const TaskForm = (props) => {
@@ -20,13 +21,13 @@ const TaskForm = (props) => {
     openModal,
     formType,
   } = props;
-  console.log(title);
+  console.log({ dueDate });
 
   const onSubmit = (data) => {
     if (formType === "edit") {
       editTask(id, data)
         .then(() => {
-          router.push("/");
+          router.push("/tasks");
           myToast("タスクを編集しました", "success");
         })
         .catch((error) => {
@@ -36,7 +37,7 @@ const TaskForm = (props) => {
     } else if (formType === "create") {
       createTask(data)
         .then(() => {
-          router.push("/");
+          router.push("/tasks");
           myToast("タスクを作成しました", "success");
         })
         .catch((error) => {
@@ -71,7 +72,9 @@ const TaskForm = (props) => {
         type="date"
         {...dueDate.registerReturn}
         //fixme
-        defaultValue={dueDate.defaultValue}
+        defaultValue={
+          dueDate.defaultValue ? dueDate.defaultValue : getAfter7Days()
+        }
       />
       <textarea
         placeholder={postContent.placeholder}
