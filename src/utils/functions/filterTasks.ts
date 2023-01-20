@@ -22,8 +22,8 @@ export const filterTasksByDueDate = (
     const now = new Date();
     const dueDate = new Date(task.dueDate);
     const diff = dueDate.getTime() - now.getTime();
-    const diffDays = diff / (1000 * 60 * 60 * 24);
-    console.log(diffDays);
+    //期限日を含めるため+1する。
+    const diffDays = diff / (1000 * 60 * 60 * 24) + 1;
 
     //期限切れのタスクは対象外とする。
     return diffDays <= dueDays && diffDays >= 0;
