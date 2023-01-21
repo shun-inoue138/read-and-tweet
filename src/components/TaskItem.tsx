@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import React, { FC } from "react";
-import { deleteTask, useGetAllTasks } from "src/api/tasksAPI";
+import { completeTask, deleteTask, useGetAllTasks } from "src/api/tasksAPI";
 import { useModal } from "src/hooks/useModal";
 import { myToast } from "src/utils/functions/toastWrapper";
-import { CompletedTask, IncompletedTask } from "src/utils/types/Task";
+import { CompletedTask, IncompletedTask, Task } from "src/utils/types/Task";
 import Button from "./Button";
 import Card from "./Card";
 import TweetTextArea from "./TweetTextArea";
@@ -16,6 +16,9 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
   const router = useRouter();
   const { MyModal, openModal, closeModal } = useModal();
   const TweetTextAreaEL = React.useRef<HTMLTextAreaElement>(null);
+  const [understandingRate, setUnderstandingRate] =
+    React.useState<Task["understandingRate"]>(1);
+
   if (!props.isCompleted) {
     const { url, id, title, randomNote, dueDate, postContent, categories } =
       props;
@@ -76,7 +79,10 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
         </Card>
         <MyModal>
           <TweetTextArea ref={TweetTextAreaEL}>{postContent}</TweetTextArea>
-          <UnderstandingRateStars />
+          <UnderstandingRateStars
+            understandingRate={understandingRate}
+            setUnderstandingRate={setUnderstandingRate}
+          />
           <div className="flex justify-end">
             <Button
               buttonColor="blue"
@@ -91,8 +97,16 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
                   );
                   return;
                 }
-                alert("ツイートしました");
+                completeTask(id, {
+                  ...props,
+                  understandingRate,
+                  isCompleted: true,
+                  postContent: TweetTextAreaEL.current?.value,
+                });
+
                 closeModal();
+                myToast("保存されました。", "success");
+                mutate();
               }}
             >
               投稿する
