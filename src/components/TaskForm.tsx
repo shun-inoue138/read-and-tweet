@@ -35,7 +35,7 @@ const TaskForm = (props) => {
           myToast("タスクの編集に失敗しました", "error");
         });
     } else if (formType === "create") {
-      createTask(data)
+      createTask({ ...data, isCompleted: false })
         .then(() => {
           router.push("/tasks");
           myToast("タスクを作成しました", "success");
