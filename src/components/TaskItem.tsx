@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { deleteTask, useGetAllTasks } from "src/api/tasksAPI";
 import { useModal } from "src/hooks/useModal";
+import { myToast } from "src/utils/functions/toastWrapper";
 import { CompletedTask, IncompletedTask } from "src/utils/types/Task";
 import Button from "./Button";
 import Card from "./Card";
@@ -79,9 +80,19 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
           <div className="flex justify-end">
             <Button
               buttonColor="blue"
-              // todo:140字以上はdisabledにする
               onClick={() => {
-                console.log(TweetTextAreaEL.current?.value.length);
+                if (!TweetTextAreaEL.current?.value.length) {
+                  myToast("ツイート内容を入力してください", "error");
+                  return;
+                } else if (TweetTextAreaEL.current?.value.length > 140) {
+                  myToast(
+                    "ツイート内容は140文字以内で入力してください",
+                    "error"
+                  );
+                  return;
+                }
+                alert("ツイートしました");
+                closeModal();
               }}
             >
               投稿する
