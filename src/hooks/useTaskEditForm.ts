@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useGetTask } from "src/api/tasksAPI";
 import { taskObjectFactory } from "src/utils/functions/taskObjectFactory";
-import { IncompletedTask, Task } from "src/utils/types/Task";
+import { Task } from "src/utils/types/Task";
 
 export const useTaskEditForm = (id: number) => {
   const {

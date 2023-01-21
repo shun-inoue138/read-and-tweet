@@ -51,3 +51,7 @@ export const createTask = (task: Task) => {
   const url = "/tasks";
   return axiosClient.post(url, task);
 };
+export const completeTask = (id: number, task: Task) => {
+  const url = `/tasks/${id}/`;
+  return axiosClient.put(url, task);
+};

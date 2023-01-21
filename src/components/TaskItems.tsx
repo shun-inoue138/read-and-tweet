@@ -2,6 +2,7 @@ import React from "react";
 import { useGetAllTasks } from "src/api/tasksAPI";
 import {
   filterTasksByDueDate,
+  filterTasksByIsCompleted,
   filterTasksByOverDue,
   filterTasksByWord,
 } from "src/utils/functions/filterTasks";
@@ -9,9 +10,15 @@ import {
 import useSWR from "swr";
 import TaskItem from "./TaskItem";
 
-const TaskItems = ({ searchWord, filterDueDays, isFilterByOverdue }) => {
+const TaskItems = ({
+  searchWord,
+  filterDueDays,
+  isFilterByOverdue,
+  isCompletePage,
+}) => {
   const { tasks, error, mutate, isLoading } = useGetAllTasks();
-  let filteredTasks = filterTasksByWord(tasks, searchWord);
+  let filteredTasks = filterTasksByIsCompleted(tasks, isCompletePage);
+  filteredTasks = filterTasksByWord(filteredTasks, searchWord);
   if (filterDueDays.isFilter) {
     filteredTasks = filterTasksByDueDate(filteredTasks, filterDueDays.days);
   }

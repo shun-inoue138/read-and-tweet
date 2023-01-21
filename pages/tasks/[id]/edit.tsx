@@ -7,7 +7,6 @@ import {
   useGetTask,
 } from "src/api/tasksAPI";
 import { useTaskEditForm } from "src/hooks/useTaskEditForm";
-import { IncompletedTask, Task } from "src/utils/types/Task";
 import { myToast } from "src/utils/functions/toastWrapper";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
 import { useModal } from "src/hooks/useModal";
