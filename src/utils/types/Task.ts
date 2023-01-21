@@ -5,6 +5,7 @@ type BaseTask = {
   randomNote: string;
   categories: string[];
   postContent: string;
+  understandingRate: 1 | 2 | 3 | 4 | 5;
 };
 
 export type IncompletedTask = BaseTask & {
@@ -13,8 +14,7 @@ export type IncompletedTask = BaseTask & {
 };
 
 export type CompletedTask = BaseTask & {
-  understandingRate: 1 | 2 | 3 | 4 | 5;
-  passedTime: number;
+  // passedTime: number;
   isCompleted: true;
 };
 
