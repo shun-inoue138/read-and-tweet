@@ -1,4 +1,4 @@
-type BaseTask = {
+export type Task = {
   url: string;
   id: number;
   title: string;
@@ -6,16 +6,7 @@ type BaseTask = {
   categories: string[];
   postContent: string;
   understandingRate: 1 | 2 | 3 | 4 | 5;
-};
-
-export type IncompletedTask = BaseTask & {
   dueDate: string;
-  isCompleted: false;
+  isCompleted: boolean;
+  // passedTimeByMinute: number;
 };
-
-export type CompletedTask = BaseTask & {
-  // passedTime: number;
-  isCompleted: true;
-};
-
-export type Task = IncompletedTask | CompletedTask;

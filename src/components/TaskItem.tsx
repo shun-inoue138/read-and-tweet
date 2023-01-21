@@ -19,130 +19,97 @@ const TaskItem: FC<IncompletedTask | CompletedTask> = (props) => {
   const [understandingRate, setUnderstandingRate] =
     React.useState<Task["understandingRate"]>(1);
 
-  if (!props.isCompleted) {
-    const { url, id, title, randomNote, dueDate, postContent, categories } =
-      props;
-    console.log({ categories });
+  const { url, id, title, randomNote, dueDate, postContent, categories } =
+    props;
+  console.log({ categories });
 
-    return (
-      <section>
-        未完了
-        <Card>
-          <a href={url}>{url}</a>
-          <h2>{title}</h2>
+  return (
+    <section>
+      <Card>
+        <a href={url}>{url}</a>
+        <h2>{title}</h2>
 
-          <p>{randomNote}</p>
+        <p>{randomNote}</p>
 
-          <span>{dueDate}</span>
-          <p>{postContent}</p>
-          <ul>
-            {categories?.map((category) => (
-              <li key={category}>{category}</li>
-            ))}
-          </ul>
+        <span>{dueDate}</span>
+        <p>{postContent}</p>
+        <ul>
+          {categories?.map((category) => (
+            <li key={category}>{category}</li>
+          ))}
+        </ul>
 
-          <div className="mt-2 flex gap-2">
-            <Button
-              buttonColor="red"
-              onClick={() => {
-                deleteTask(id).then(() => mutate());
-              }}
-            >
-              削除
-            </Button>
-            <Button
-              buttonColor="green"
-              onClick={() => {
-                router.push(
-                  {
-                    pathname: `/tasks/${id}/edit`,
-                    // query: {
-                    //   id,
-                    // },
-                  }
-                  // `/tasks/${id}/edit`
-                );
-              }}
-            >
-              編集
-            </Button>
-            <Button
-              buttonColor="blue"
-              className="ml-auto"
-              onClick={() => {
-                openModal();
-              }}
-            >
-              save and tweet
-            </Button>
-          </div>
-        </Card>
-        <MyModal>
-          <TweetTextArea ref={TweetTextAreaEL}>{postContent}</TweetTextArea>
-          <UnderstandingRateStars
-            understandingRate={understandingRate}
-            setUnderstandingRate={setUnderstandingRate}
-          />
-          <div className="flex justify-end">
-            <Button
-              buttonColor="blue"
-              onClick={() => {
-                if (!TweetTextAreaEL.current?.value.length) {
-                  myToast("ツイート内容を入力してください", "error");
-                  return;
-                } else if (TweetTextAreaEL.current?.value.length > 140) {
-                  myToast(
-                    "ツイート内容は140文字以内で入力してください",
-                    "error"
-                  );
-                  return;
+        <div className="mt-2 flex gap-2">
+          <Button
+            buttonColor="red"
+            onClick={() => {
+              deleteTask(id).then(() => mutate());
+            }}
+          >
+            削除
+          </Button>
+          <Button
+            buttonColor="green"
+            onClick={() => {
+              router.push(
+                {
+                  pathname: `/tasks/${id}/edit`,
+                  // query: {
+                  //   id,
+                  // },
                 }
-                completeTask(id, {
-                  ...props,
-                  understandingRate,
-                  isCompleted: true,
-                  postContent: TweetTextAreaEL.current?.value,
-                });
+                // `/tasks/${id}/edit`
+              );
+            }}
+          >
+            編集
+          </Button>
+          <Button
+            buttonColor="blue"
+            className="ml-auto"
+            onClick={() => {
+              openModal();
+            }}
+          >
+            save and tweet
+          </Button>
+        </div>
+      </Card>
+      <MyModal>
+        <TweetTextArea ref={TweetTextAreaEL}>{postContent}</TweetTextArea>
+        <UnderstandingRateStars
+          understandingRate={understandingRate}
+          setUnderstandingRate={setUnderstandingRate}
+        />
+        <div className="flex justify-end">
+          <Button
+            buttonColor="blue"
+            onClick={() => {
+              if (!TweetTextAreaEL.current?.value.length) {
+                myToast("ツイート内容を入力してください", "error");
+                return;
+              } else if (TweetTextAreaEL.current?.value.length > 140) {
+                myToast("ツイート内容は140文字以内で入力してください", "error");
+                return;
+              }
+              completeTask(id, {
+                ...props,
+                understandingRate,
+                isCompleted: true,
+                postContent: TweetTextAreaEL.current?.value,
+              });
 
-                closeModal();
-                myToast("保存されました。", "success");
-                mutate();
-              }}
-            >
-              投稿する
-            </Button>
-          </div>
-        </MyModal>
-      </section>
-    );
-  } else {
-    const {
-      url,
-      title,
-      randomNote,
-      postContent,
-      categories,
-      passedTime,
-      understandingRate,
-    } = props;
-    return (
-      <section>
-        完了
-        <Card>
-          <h2>{title}</h2>
-          <p>{randomNote}</p>
-          <p>{postContent}</p>
-          <span>{passedTime}</span>
-          <span>{understandingRate}</span>
-          <ul>
-            {categories?.map((category) => (
-              <li key={category}>{category}</li>
-            ))}
-          </ul>
-        </Card>
-      </section>
-    );
-  }
+              closeModal();
+              myToast("保存されました。", "success");
+              mutate();
+            }}
+          >
+            投稿する
+          </Button>
+        </div>
+      </MyModal>
+    </section>
+  );
 };
 
 export default TaskItem;
