@@ -39,3 +39,13 @@ export const filterTasksByOverDue = (tasks: Task[]) => {
     return dueDate < yesterday;
   });
 };
+
+export const filterTasksByIsCompleted = (
+  tasks: Task[],
+  isCompletePage: boolean
+) => {
+  return tasks?.filter((task) => {
+    console.log({ isCompletePage });
+    return task.isCompleted === isCompletePage;
+  });
+};
