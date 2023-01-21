@@ -25,7 +25,9 @@ const TweetTextArea: FC<
       >
         {children}
       </textarea>
-      <div className={tweetLength > 140 ? "text-red-500" : ""}>
+      <div
+        className={tweetLength > 140 || tweetLength === 0 ? "text-red-500" : ""}
+      >
         {tweetLength}/140
       </div>
     </div>
