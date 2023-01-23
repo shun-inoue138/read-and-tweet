@@ -1,15 +1,15 @@
 import React, { ComponentPropsWithoutRef, FC } from "react";
 import ButtonBase, { ButtonColor } from "./ButtonBase";
 
-const OutlinedButton: FC<
+const UnderlinedButton: FC<
   ComponentPropsWithoutRef<"button"> & { buttonColor: ButtonColor }
 > = ({ children, buttonColor, ...props }) => {
-  const specificClass = "rounded-lg shadow-md";
+  const specificClass = "";
 
   return (
     <ButtonBase
       {...props}
-      buttonCategory={{ color: buttonColor, type: "outlined" }}
+      buttonCategory={{ color: buttonColor, type: "underlined" }}
       specificClass={specificClass}
     >
       {children}
@@ -17,4 +17,4 @@ const OutlinedButton: FC<
   );
 };
 
-export default OutlinedButton;
+export default UnderlinedButton;

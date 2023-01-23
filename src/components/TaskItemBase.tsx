@@ -5,7 +5,7 @@ import { useConfirmationModal } from "src/hooks/useConfirmation";
 import { useModal } from "src/hooks/useModal";
 import { myToast } from "src/utils/functions/toastWrapper";
 import { Task } from "src/utils/types/Task";
-import Button from "./Button";
+import FilledButton from "./FilledButton";
 import Card from "./Card";
 import TweetTextArea from "./TweetTextArea";
 import UnderstandingRateStars from "./UnderstandingRateStars";
@@ -66,10 +66,10 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
         </ul>
 
         <div className="mt-2 flex gap-2">
-          <Button buttonColor="red" onClick={onDeleteHandler}>
+          <FilledButton buttonColor="red" onClick={onDeleteHandler}>
             削除
-          </Button>
-          <Button
+          </FilledButton>
+          <FilledButton
             buttonColor="green"
             onClick={() => {
               router.push({
@@ -78,8 +78,8 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
             }}
           >
             編集
-          </Button>
-          <Button
+          </FilledButton>
+          <FilledButton
             buttonColor="blue"
             className="ml-auto"
             onClick={() => {
@@ -87,7 +87,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
             }}
           >
             save and tweet
-          </Button>
+          </FilledButton>
         </div>
       </Card>
       <MyModal>
@@ -97,7 +97,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
           setUnderstandingRate={setUnderstandingRate}
         />
         <div className="flex justify-end">
-          <Button
+          <FilledButton
             buttonColor="blue"
             onClick={() => {
               if (!TweetTextAreaEL.current?.value.length) {
@@ -120,7 +120,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
             }}
           >
             投稿する
-          </Button>
+          </FilledButton>
         </div>
       </MyModal>
       <Confirmation {...modalConfig} />
