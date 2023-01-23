@@ -8,7 +8,8 @@ import {
 } from "src/utils/functions/filterTasks";
 
 import useSWR from "swr";
-import TaskItem from "./TaskItem";
+import CompletedTaskItem from "./CompletedTaskItem";
+import TaskItem from "./TaskItemBase";
 
 const TaskItems = ({
   searchWord,
@@ -32,7 +33,11 @@ const TaskItems = ({
       {error && <p>error</p>}
       {filteredTasks?.map((task) => (
         <div key={task.id}>
-          <TaskItem {...task} />
+          {isCompletePage ? (
+            <CompletedTaskItem {...task} />
+          ) : (
+            <TaskItem {...task} />
+          )}
         </div>
       ))}
     </div>
