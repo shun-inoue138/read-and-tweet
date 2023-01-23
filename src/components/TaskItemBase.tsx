@@ -5,7 +5,7 @@ import { useConfirmationModal } from "src/hooks/useConfirmation";
 import { useModal } from "src/hooks/useModal";
 import { myToast } from "src/utils/functions/toastWrapper";
 import { Task } from "src/utils/types/Task";
-import FilledButton from "./FilledButton";
+import FilledButton from "./Button/FilledButton";
 import Card from "./Card";
 import TweetTextArea from "./TweetTextArea";
 import UnderstandingRateStars from "./UnderstandingRateStars";

@@ -1,5 +1,5 @@
 import React, { ComponentPropsWithoutRef, FC } from "react";
-import ButtonBase, { ButtonColor } from "./ButtonBase";
+import ButtonBase, { ButtonColor } from "./Button/ButtonBase";
 
 const OutlinedButton: FC<
   ComponentPropsWithoutRef<"button"> & { buttonColor: ButtonColor }

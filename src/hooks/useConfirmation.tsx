@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "src/components/FilledButton";
+import Button from "src/components/Button/FilledButton";
 import OutlinedButton from "src/components/OutlineButton";
 import UnderlinedButton from "src/components/UnderlinedButton";
 import { useModal } from "./useModal";
