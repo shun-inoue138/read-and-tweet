@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Button from "src/components/Button/FilledButton";
-import OutlinedButton from "src/components/OutlineButton";
-import UnderlinedButton from "src/components/UnderlinedButton";
+import OutlinedButton from "src/components/Button/OutlineButton";
+import UnderlinedButton from "src/components/Button/UnderlinedButton";
+
 import { useModal } from "./useModal";
 
 export type MyDialogProps = {
@@ -22,7 +23,7 @@ export const useConfirmationModal = () => {
           <p className="mb-8 text-2xl font-mono">{question}</p>
           <ul className="flex gap-20   justify-center">
             <li>
-              <OutlinedButton
+              <UnderlinedButton
                 buttonColor="red"
                 onClick={() => {
                   onClose("yes");
@@ -30,7 +31,7 @@ export const useConfirmationModal = () => {
                 }}
               >
                 YES
-              </OutlinedButton>
+              </UnderlinedButton>
             </li>
             <li>
               <UnderlinedButton
