@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
-import { set } from "react-hook-form";
 import { completeTask, deleteTask, useGetAllTasks } from "src/api/tasksAPI";
-import { useConfirmation } from "src/hooks/useConfirmation";
+import { useConfirmationModal } from "src/hooks/useConfirmation";
 import { useModal } from "src/hooks/useModal";
 import { myToast } from "src/utils/functions/toastWrapper";
 import { Task } from "src/utils/types/Task";
@@ -11,18 +10,11 @@ import Card from "./Card";
 import TweetTextArea from "./TweetTextArea";
 import UnderstandingRateStars from "./UnderstandingRateStars";
 
-export type MyDialogProps = {
-  title: string;
-  content: string;
-  onClose: (value: string) => void;
-};
-
 const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
   isCompletePage = false,
   //fix:なぜtasks？taskであるべき
   ...tasks
 }) => {
-  //todo:共通部分のコンポーネント化(TaskItemBase)
   const { mutate } = useGetAllTasks();
   const router = useRouter();
   const { MyModal, openModal, closeModal } = useModal();
@@ -35,22 +27,15 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
   const editpageURL = isCompletePage
     ? `/tasks/completed/${id}/edit`
     : `/tasks/${id}/edit`;
-  const {
-    Confirmation,
-    getIsConfirmed,
-    resetIsConfirmed,
-    openConfirmationModal,
-  } = useConfirmation();
-  const [modalConfig, setModalConfig] = React.useState<
-    MyDialogProps | undefined
-  >();
+  const { Confirmation, openConfirmationModal, modalConfig, setModalConfig } =
+    useConfirmationModal();
+
   const onDeleteHandler = async () => {
     openConfirmationModal();
     const ret = await new Promise<string>((resolve) => {
       setModalConfig({
         onClose: resolve,
-        title: "削除します。よろしいですか?",
-        content: "削除すると二度と元に戻せません。",
+        question: "本当に削除しますか？",
       });
     });
     setModalConfig(undefined);

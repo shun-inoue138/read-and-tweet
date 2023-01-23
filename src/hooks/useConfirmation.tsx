@@ -1,45 +1,46 @@
 import { useState } from "react";
-import { MyDialogProps } from "src/components/TaskItemBase";
+import Button from "src/components/Button";
+import OutlineButton from "src/components/OutlineButton";
 import { useModal } from "./useModal";
 
-export const useConfirmation = () => {
+export type MyDialogProps = {
+  onClose: (value: string) => void;
+  question: string;
+};
+
+export const useConfirmationModal = () => {
   const { MyModal, openModal, closeModal } = useModal();
-  const [isConfirmed, setIsConfirmed] = useState<"yes" | "no" | undefined>(
-    undefined
-  );
-  const getIsConfirmed = () => {
-    return isConfirmed;
-  };
-  const resetIsConfirmed = () => {
-    setIsConfirmed(undefined);
-  };
+  const [modalConfig, setModalConfig] = useState<MyDialogProps | undefined>();
 
   const Confirmation = (props: MyDialogProps) => {
-    const { onClose } = props;
-    const onConfirmHandler = (val: "yes" | "no") => {
-      setIsConfirmed(val);
-    };
+    const { onClose, question } = props;
 
     return (
       <MyModal>
-        <div className="flex flex-col gap-3">
-          <p>本当に削除しますか?</p>
-          <ul className="flex gap-2 justify-center">
-            <li
-              onClick={() => {
-                onClose("yes");
-                closeModal();
-              }}
-            >
-              YES
+        <div className="p-9">
+          <p className="mb-8 text-2xl font-mono">{question}</p>
+          <ul className="flex gap-20   justify-center">
+            <li>
+              <OutlineButton
+                buttonColor="red"
+                onClick={() => {
+                  onClose("yes");
+                  closeModal();
+                }}
+              >
+                YES
+              </OutlineButton>
             </li>
-            <li
-              onClick={() => {
-                onClose("no");
-                closeModal();
-              }}
-            >
-              NO
+            <li>
+              <OutlineButton
+                buttonColor="blue"
+                onClick={() => {
+                  onClose("no");
+                  closeModal();
+                }}
+              >
+                NO
+              </OutlineButton>
             </li>
           </ul>
         </div>
@@ -50,7 +51,7 @@ export const useConfirmation = () => {
   return {
     Confirmation,
     openConfirmationModal: openModal,
-    getIsConfirmed,
-    resetIsConfirmed,
+    modalConfig,
+    setModalConfig,
   };
 };
