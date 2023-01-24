@@ -13,7 +13,7 @@ import UnderstandingRateStars from "./UnderstandingRateStars";
 const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
   isCompletePage = false,
   //fix:なぜtasks？taskであるべき
-  ...tasks
+  ...task
 }) => {
   const { mutate } = useGetAllTasks();
   const router = useRouter();
@@ -22,8 +22,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
   const [understandingRate, setUnderstandingRate] =
     React.useState<Task["understandingRate"]>(1);
 
-  const { url, id, title, randomNote, dueDate, postContent, categories } =
-    tasks;
+  const { url, id, title, randomNote, dueDate, postContent, categories } = task;
   const editpageURL = isCompletePage
     ? `/tasks/completed/${id}/edit`
     : `/tasks/${id}/edit`;
@@ -56,8 +55,19 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
         <h2>{title}</h2>
 
         <p>{randomNote}</p>
+        {isCompletePage ? (
+          <div className="flex gap-2 items-center">
+            <span>理解度</span>
+            {/* todo:見た目だけを抽出する */}
+            <UnderstandingRateStars
+              understandingRate={understandingRate}
+              // setUnderstandingRate={setUnderstandingRate}
+            />
+          </div>
+        ) : (
+          <span>{dueDate}</span>
+        )}
 
-        <span>{dueDate}</span>
         <p>{postContent}</p>
         <ul>
           {categories?.map((category) => (
@@ -108,7 +118,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
                 return;
               }
               completeTask(id, {
-                ...tasks,
+                ...task,
                 understandingRate,
                 isCompleted: true,
                 postContent: TweetTextAreaEL.current?.value,
