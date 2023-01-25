@@ -49,3 +49,18 @@ export const filterTasksByIsCompleted = (
     return task.isCompleted === isCompletePage;
   });
 };
+
+export const filterTasksByUnderstandingRate = (
+  tasks: Task[],
+  rate: Task["understandingRate"]
+) => {
+  return tasks.filter((task) => task.understandingRate === rate);
+};
+
+export const filterTasksByCategory = (
+  tasks: Task[],
+  //fix:categorisの型を連想配列にすると↓は要変更。
+  category: Task["categories"][number]
+) => {
+  return tasks.filter((task) => task.categories.includes(category));
+};

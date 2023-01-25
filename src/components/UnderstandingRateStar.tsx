@@ -1,6 +1,7 @@
 import React from "react";
 import { AiOutlineStar } from "react-icons/ai";
 import { AiFillStar } from "react-icons/ai";
+import { Task } from "src/utils/types/Task";
 
 const UnderstandingRateStar = ({
   isDisplay,
@@ -8,9 +9,19 @@ const UnderstandingRateStar = ({
   setUnderstandingRate,
 }: {
   isDisplay: boolean;
-  number: number;
-  setUnderstandingRate: React.Dispatch<React.SetStateAction<number>>;
+  number: Task["understandingRate"];
+  setUnderstandingRate?: React.Dispatch<
+    React.SetStateAction<Task["understandingRate"]>
+  >;
 }) => {
+  if (setUnderstandingRate === undefined) {
+    return (
+      //classNameの共通化
+      <div className="text-yellow-400 text-3xl">
+        {isDisplay ? <AiFillStar /> : <AiOutlineStar />}
+      </div>
+    );
+  }
   return (
     <button
       onClick={() => {

@@ -4,26 +4,41 @@ import {
   filterTasksByDueDate,
   filterTasksByIsCompleted,
   filterTasksByOverDue,
+  filterTasksByUnderstandingRate,
   filterTasksByWord,
 } from "src/utils/functions/filterTasks";
 
 import useSWR from "swr";
-import TaskItem from "./TaskItem";
+import CompletedTaskItem from "./CompletedTaskItem";
+import TaskItem from "./TaskItemBase";
 
-const TaskItems = ({
-  searchWord,
-  filterDueDays,
-  isFilterByOverdue,
-  isCompletePage,
-}) => {
+const TaskItems = ({ commonPageProps, specificPageProps }) => {
   const { tasks, error, mutate, isLoading } = useGetAllTasks();
-  let filteredTasks = filterTasksByIsCompleted(tasks, isCompletePage);
-  filteredTasks = filterTasksByWord(filteredTasks, searchWord);
-  if (filterDueDays.isFilter) {
-    filteredTasks = filterTasksByDueDate(filteredTasks, filterDueDays.days);
-  }
-  if (isFilterByOverdue) {
-    filteredTasks = filterTasksByOverDue(filteredTasks);
+  let filteredTasks = filterTasksByIsCompleted(
+    tasks,
+    commonPageProps.isCompletePage
+  );
+
+  filteredTasks = filterTasksByWord(filteredTasks, commonPageProps.searchWord);
+  console.log({ filteredTasks });
+  //fix:ネスト解除したい
+  if (!commonPageProps.isCompletePage) {
+    if (specificPageProps.filterDueDays?.isFilter) {
+      filteredTasks = filterTasksByDueDate(
+        filteredTasks,
+        specificPageProps.filterDueDays.days
+      );
+    }
+    if (specificPageProps.isFilterByOverdue) {
+      filteredTasks = filterTasksByOverDue(filteredTasks);
+    }
+  } else {
+    if (specificPageProps.filterUnderstandingRate?.isFilter) {
+      filteredTasks = filterTasksByUnderstandingRate(
+        filteredTasks,
+        specificPageProps.filterUnderstandingRate.rate
+      );
+    }
   }
 
   return (
@@ -32,10 +47,15 @@ const TaskItems = ({
       {error && <p>error</p>}
       {filteredTasks?.map((task) => (
         <div key={task.id}>
-          <TaskItem {...task} />
+          {commonPageProps.isCompletePage ? (
+            <CompletedTaskItem {...task} />
+          ) : (
+            <TaskItem {...task} />
+          )}
         </div>
       ))}
     </div>
   );
 };
+
 export default TaskItems;

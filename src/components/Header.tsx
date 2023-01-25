@@ -1,63 +1,98 @@
 import { Router, useRouter } from "next/router";
 import React from "react";
-import { Input_Due_Days } from "src/utils/const";
+import {
+  Default_Input_Due_Days,
+  Default_Input_Understanding_Rate,
+} from "src/utils/const";
 
-const Header = ({
-  searchWord,
-  setSearchWord,
-  setFilterDueDays,
-  filterDueDays,
-  isFilterByOverdue,
-  setIsFilterByOverdue,
-}) => {
+const Header = ({ commonPageProps, specificPageProps }) => {
   const router = useRouter();
-  const [inputDueDays, setInputDueDays] =
-    React.useState<number>(Input_Due_Days);
+  console.log({ commonPageProps });
+
+  const [inputDueDays, setInputDueDays] = React.useState<number>(
+    Default_Input_Due_Days
+  );
+  //fix:commonPageProps.isCompletePageがfalseの場合無駄なstateが生成される
+  const [inputUnderstandingRate, setInputUnderstandingRate] =
+    React.useState<number>(Default_Input_Understanding_Rate);
   return (
-    <div className=" h-12 bg-slate-400">
-      <input
-        type="text"
-        value={searchWord}
-        onChange={(e) => {
-          setSearchWord(e.target.value);
-        }}
-      />
-      <button
-        onClick={() => {
-          router.push("/tasks/create");
-        }}
-      >
-        新規タスク登録
-      </button>
-      締め切り
-      <input
-        type="number"
-        value={inputDueDays}
-        max={100}
-        min={1}
-        //todo:設定画面でデフォルト値を設定できるようにする
-        onChange={(e) => {
-          setInputDueDays(Number(e.target.value));
-        }}
-      />
-      日以内のタスクのみ表示
-      <button
-        onClick={() => {
-          setFilterDueDays({
-            isFilter: !filterDueDays.isFilter,
-            days: inputDueDays,
-          });
-        }}
-      >
-        表示
-      </button>
-      <button
-        onClick={() => {
-          setIsFilterByOverdue(!isFilterByOverdue);
-        }}
-      >
-        期限切れのみ
-      </button>
+    <div className=" bg-slate-400">
+      {commonPageProps.isCompletePage ? (
+        <div>
+          <input
+            type="number"
+            value={inputUnderstandingRate}
+            //fix:マジックナンバー
+            max={5}
+            min={1}
+            //todo:設定画面でデフォルト値を設定できるようにする
+            onChange={(e) => {
+              setInputUnderstandingRate(Number(e.target.value));
+            }}
+          />
+          理解度のタスクのみ表示
+          <button
+            onClick={() => {
+              specificPageProps.setFilterUnderstandingRate({
+                isFilter: !specificPageProps.filterUnderstandingRate.isFilter,
+                rate: inputUnderstandingRate,
+              });
+            }}
+          >
+            表示
+          </button>
+        </div>
+      ) : (
+        <div>
+          <input
+            type="text"
+            value={commonPageProps.searchWord}
+            onChange={(e) => {
+              commonPageProps.setSearchWord(e.target.value);
+            }}
+          />
+          <button
+            onClick={() => {
+              router.push("/tasks/create");
+            }}
+          >
+            新規タスク登録
+          </button>
+          <div>
+            締め切り
+            <input
+              type="number"
+              value={inputDueDays}
+              max={100}
+              min={1}
+              //todo:設定画面でデフォルト値を設定できるようにする
+              onChange={(e) => {
+                setInputDueDays(Number(e.target.value));
+              }}
+            />
+            日以内のタスクのみ表示
+            <button
+              onClick={() => {
+                specificPageProps.setFilterDueDays({
+                  isFilter: !specificPageProps.filterDueDays.isFilter,
+                  days: inputDueDays,
+                });
+              }}
+            >
+              表示
+            </button>
+          </div>
+          <button
+            onClick={() => {
+              specificPageProps.setIsFilterByOverdue(
+                !specificPageProps.isFilterByOverdue
+              );
+            }}
+          >
+            期限切れのみ
+          </button>
+        </div>
+      )}
     </div>
   );
 };

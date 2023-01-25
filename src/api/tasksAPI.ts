@@ -55,3 +55,8 @@ export const completeTask = (id: number, task: Task) => {
   const url = `/tasks/${id}/`;
   return axiosClient.put(url, task);
 };
+export const undoCompleteTask = (id: number, task: Task) => {
+  const url = `/tasks/${id}/`;
+  const undoTask = { ...task, isCompleted: false };
+  return axiosClient.put(url, undoTask);
+};
