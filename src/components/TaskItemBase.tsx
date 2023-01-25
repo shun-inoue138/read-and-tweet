@@ -1,6 +1,11 @@
 import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
-import { completeTask, deleteTask, useGetAllTasks } from "src/api/tasksAPI";
+import {
+  completeTask,
+  deleteTask,
+  undoCompleteTask,
+  useGetAllTasks,
+} from "src/api/tasksAPI";
 import { useConfirmationModal } from "src/hooks/useConfirmation";
 import { useModal } from "src/hooks/useModal";
 import { myToast } from "src/utils/functions/toastWrapper";
@@ -86,15 +91,40 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
           >
             編集
           </FilledButton>
-          <FilledButton
-            buttonColor="blue"
-            className="ml-auto"
-            onClick={() => {
-              openModal();
-            }}
-          >
-            save and tweet
-          </FilledButton>
+          {isCompletePage ? (
+            <FilledButton
+              buttonColor="blue"
+              className="ml-auto"
+              onClick={async () => {
+                openConfirmationModal();
+                const ret = await new Promise<string>((resolve) => {
+                  setModalConfig({
+                    onClose: resolve,
+                    question: "本当に戻しますか？",
+                  });
+                });
+                setModalConfig(undefined);
+                console.log(ret);
+                if (ret === "yes") {
+                  await undoCompleteTask(id, task);
+                  mutate();
+                  myToast("未完了に戻しました。", "success");
+                }
+              }}
+            >
+              未完了に戻す
+            </FilledButton>
+          ) : (
+            <FilledButton
+              buttonColor="blue"
+              className="ml-auto"
+              onClick={() => {
+                openModal();
+              }}
+            >
+              save and tweet
+            </FilledButton>
+          )}
         </div>
       </Card>
       <MyModal>
