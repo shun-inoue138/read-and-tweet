@@ -1,4 +1,4 @@
-export const taskObjectFactory = (register, errors, task?) => {
+export const taskObjectFactory = (register, errors, task) => {
   return {
     URL: {
       placeholder: "URLを入力してください",

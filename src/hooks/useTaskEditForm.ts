@@ -4,7 +4,7 @@ import { useGetTask } from "src/api/tasksAPI";
 import { taskObjectFactory } from "src/utils/functions/taskObjectFactory";
 import { Task } from "src/utils/types/Task";
 
-export const useTaskEditForm = (id: number) => {
+export const useTaskEditForm = (id: Task["_id"]) => {
   const {
     register,
     control,
@@ -16,7 +16,7 @@ export const useTaskEditForm = (id: number) => {
     mode: "onChange",
     reValidateMode: "onChange",
   });
-  const { task, isLoading, error } = useGetTask(id, reset);
+  const { task, isLoading, error: fetchError } = useGetTask(id, reset);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -34,7 +34,7 @@ export const useTaskEditForm = (id: number) => {
     append,
     remove,
     task,
-    error,
+    fetchError,
     TaskEditObject,
   };
 };

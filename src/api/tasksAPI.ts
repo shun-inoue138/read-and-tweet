@@ -1,3 +1,4 @@
+import { convertToHtmlDateInput } from "./../utils/functions/convertToHtmlDateInput";
 import axiosClient from "./axiosClient";
 import { Task } from "../utils/types/Task";
 import useSWR, { Fetcher } from "swr";
@@ -12,11 +13,16 @@ export const useGetAllTasks = () => {
 };
 
 //useFormとuseFieldArrayと併用する場合のみ引数にresetを渡す
-export const useGetTask = (id: number, reset?) => {
+export const useGetTask = (id: string, reset?) => {
   const url = `/tasks/${id}`;
   const fetcher: Fetcher<Task, string> = () => {
     return axiosClient.get(url).then((res) => {
-      reset && reset(res.data);
+      //fix。不自然。htmlのinput type="date"にて表示させるため無理やり変形させている。
+      reset &&
+        reset({
+          ...res.data,
+          dueDate: convertToHtmlDateInput(res.data.dueDate),
+        });
       return res.data;
     });
   };

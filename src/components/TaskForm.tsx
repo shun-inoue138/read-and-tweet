@@ -1,8 +1,14 @@
 import React from "react";
 import { createTask, editTask } from "src/api/tasksAPI";
-import { getAfter7Days } from "src/utils/functions/getAfter7Days";
+import { convertToHtmlDateInput } from "src/utils/functions/convertToHtmlDateInput";
+import {
+  getAfter7Days,
+  getOneWeekAfterDay,
+} from "src/utils/functions/getAfter7Days";
+import { getFormattedDatebyYmd } from "src/utils/functions/getFormattedDate";
 import { myToast } from "src/utils/functions/toastWrapper";
 
+//todo:全体的に要リファクタリング
 const TaskForm = (props) => {
   const {
     URL,
@@ -21,7 +27,7 @@ const TaskForm = (props) => {
     openModal,
     formType,
   } = props;
-  console.log({ dueDate });
+  console.log(dueDate.defaultValue);
 
   const onSubmit = (data) => {
     if (formType === "edit") {
@@ -73,7 +79,9 @@ const TaskForm = (props) => {
         {...dueDate.registerReturn}
         //fixme
         defaultValue={
-          dueDate.defaultValue ? dueDate.defaultValue : getAfter7Days()
+          dueDate.defaultValue
+            ? convertToHtmlDateInput(dueDate.defaultValue)
+            : getOneWeekAfterDay()
         }
       />
       <textarea

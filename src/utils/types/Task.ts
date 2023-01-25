@@ -1,6 +1,6 @@
 export type Task = {
   url: string;
-  id: number;
+  _id: string;
   title: string;
   randomNote: string;
   categories: string[];
