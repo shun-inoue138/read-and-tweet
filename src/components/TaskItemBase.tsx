@@ -8,6 +8,7 @@ import {
 } from "src/api/tasksAPI";
 import { useConfirmationModal } from "src/hooks/useConfirmation";
 import { useModal } from "src/hooks/useModal";
+import { convertToHtmlDateInput } from "src/utils/functions/convertToHtmlDateInput";
 import { myToast } from "src/utils/functions/toastWrapper";
 import { Task } from "src/utils/types/Task";
 import FilledButton from "./Button/FilledButton";
@@ -28,10 +29,20 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
     Task["understandingRate"]
   >(task.understandingRate || 1);
 
-  const { url, id, title, randomNote, dueDate, postContent, categories } = task;
+  const {
+    url,
+    _id: id,
+    title,
+    randomNote,
+    dueDate,
+    postContent,
+    categories,
+  } = task;
   const editpageURL = isCompletePage
     ? `/tasks/completed/${id}/edit`
     : `/tasks/${id}/edit`;
+  console.log(task);
+
   const { Confirmation, openConfirmationModal, modalConfig, setModalConfig } =
     useConfirmationModal();
 
@@ -68,7 +79,8 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
             <UnderstandingRateStars understandingRate={understandingRate} />
           </div>
         ) : (
-          <span>{dueDate}</span>
+          //fix?
+          <span>{convertToHtmlDateInput(dueDate)}</span>
         )}
 
         <p>{postContent}</p>
