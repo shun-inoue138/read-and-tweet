@@ -14,6 +14,9 @@ import TaskItem from "./TaskItemBase";
 
 const TaskItems = ({ commonPageProps, specificPageProps }) => {
   const { tasks, error, mutate, isLoading } = useGetAllTasks();
+  if (isLoading) return <div>loading...</div>;
+  if (error) return <div>error</div>;
+  if (!tasks) return <div>no tasks</div>;
   let filteredTasks = filterTasksByIsCompleted(
     tasks,
     commonPageProps.isCompletePage
@@ -43,8 +46,6 @@ const TaskItems = ({ commonPageProps, specificPageProps }) => {
 
   return (
     <div>
-      {isLoading && <p>loading...</p>}
-      {error && <p>error</p>}
       {filteredTasks?.map((task) => (
         <div key={task.id}>
           {commonPageProps.isCompletePage ? (
