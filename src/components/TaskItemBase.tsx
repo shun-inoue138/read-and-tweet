@@ -24,8 +24,9 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
   const router = useRouter();
   const { MyModal, openModal, closeModal } = useModal();
   const TweetTextAreaEL = React.useRef<HTMLTextAreaElement>(null);
-  const [understandingRate, setUnderstandingRate] =
-    React.useState<Task["understandingRate"]>(1);
+  const [understandingRate, setUnderstandingRate] = React.useState<
+    Task["understandingRate"]
+  >(task.understandingRate || 1);
 
   const { url, id, title, randomNote, dueDate, postContent, categories } = task;
   const editpageURL = isCompletePage

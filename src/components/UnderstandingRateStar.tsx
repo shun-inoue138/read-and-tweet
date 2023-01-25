@@ -16,6 +16,7 @@ const UnderstandingRateStar = ({
 }) => {
   if (setUnderstandingRate === undefined) {
     return (
+      //classNameの共通化
       <div className="text-yellow-400 text-3xl">
         {isDisplay ? <AiFillStar /> : <AiOutlineStar />}
       </div>

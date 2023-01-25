@@ -18,6 +18,8 @@ const UnderstandingRateStars = ({
     <ul className="flex gap-1">
       {Array.from({ length: Max_Number }, (_, i) => i + 1).map((number) => {
         if (setUnderstandingRate === undefined) {
+          console.log(understandingRate);
+
           return (
             <li key={number}>
               <UnderstandingRateStar
