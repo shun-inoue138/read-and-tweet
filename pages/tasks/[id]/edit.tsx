@@ -16,8 +16,8 @@ import CategoryModalContent from "src/components/CategoryModalContent";
 
 const edit = () => {
   const router = useRouter();
-  const { id: stringId } = router.query;
-  const id = Number(stringId);
+  const { id: rawId } = router.query;
+  const id = String(rawId);
   const {
     register,
     handleSubmit,
@@ -26,7 +26,7 @@ const edit = () => {
     remove,
     task,
     isLoading,
-    error,
+    fetchError,
     fields,
     TaskEditObject,
   } = useTaskEditForm(id);
@@ -38,7 +38,7 @@ const edit = () => {
 
   if (isLoading) {
     return <p>loading...</p>;
-  } else if (error) {
+  } else if (fetchError) {
     return <p>error</p>;
   } else if (!task) {
     return <p>task not found</p>;
