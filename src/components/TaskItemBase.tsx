@@ -58,11 +58,8 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
         {isCompletePage ? (
           <div className="flex gap-2 items-center">
             <span>理解度</span>
-            {/* todo:見た目だけを抽出する */}
-            <UnderstandingRateStars
-              understandingRate={understandingRate}
-              // setUnderstandingRate={setUnderstandingRate}
-            />
+
+            <UnderstandingRateStars understandingRate={understandingRate} />
           </div>
         ) : (
           <span>{dueDate}</span>
