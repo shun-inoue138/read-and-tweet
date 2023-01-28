@@ -32,11 +32,11 @@ export const useGetTask = (id: string, reset?) => {
 
 export const useGetCategoryList = () => {
   const url = "/categoryList";
-  const fetcher: Fetcher<{ id: number; name: string }[], string> = () => {
+  const fetcher: Fetcher<{ id: string; name: string }[], string> = () => {
     return axiosClient.get(url).then((res) => res.data);
   };
   const { data, error, mutate, isLoading } = useSWR<
-    { id: number; name: string }[]
+    { id: string; name: string }[]
   >(url, fetcher);
   return { categoryList: data, error, mutate, isLoading };
 };
@@ -45,23 +45,25 @@ export const createCategory = (name: string) => {
   return axiosClient.post(url, { name });
 };
 
-export const deleteTask = (id: number) => {
+export const deleteTask = (id: string) => {
   const url = `/tasks/${id}`;
   return axiosClient.delete(url);
 };
-export const editTask = (id: number, task: Task) => {
+export const editTask = (id: string, task: Task) => {
   const url = `/tasks/${id}`;
+  console.log(task);
+
   return axiosClient.put(url, task);
 };
 export const createTask = (task: Task) => {
   const url = "/tasks";
   return axiosClient.post(url, task);
 };
-export const completeTask = (id: number, task: Task) => {
+export const completeTask = (id: string, task: Task) => {
   const url = `/tasks/${id}/`;
   return axiosClient.put(url, task);
 };
-export const undoCompleteTask = (id: number, task: Task) => {
+export const undoCompleteTask = (id: string, task: Task) => {
   const url = `/tasks/${id}/`;
   const undoTask = { ...task, isCompleted: false };
   return axiosClient.put(url, undoTask);
