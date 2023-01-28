@@ -24,7 +24,6 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
   const { mutate } = useGetAllTasks();
   const router = useRouter();
   const { MyModal, openModal, closeModal } = useModal();
-  const TweetTextAreaEL = React.useRef<HTMLTextAreaElement>(null);
   const [understandingRate, setUnderstandingRate] = React.useState<
     Task["understandingRate"]
   >(task.understandingRate || 1);
@@ -141,7 +140,6 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
         </div>
       </Card>
       <MyModal>
-        <TweetTextArea ref={TweetTextAreaEL}>{postContent}</TweetTextArea>
         <UnderstandingRateStars
           understandingRate={understandingRate}
           setUnderstandingRate={setUnderstandingRate}
@@ -150,18 +148,10 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
           <FilledButton
             buttonColor="blue"
             onClick={() => {
-              if (!TweetTextAreaEL.current?.value.length) {
-                myToast("ツイート内容を入力してください", "error");
-                return;
-              } else if (TweetTextAreaEL.current?.value.length > 140) {
-                myToast("ツイート内容は140文字以内で入力してください", "error");
-                return;
-              }
               completeTask(id, {
                 ...task,
                 understandingRate,
                 isCompleted: true,
-                postContent: TweetTextAreaEL.current?.value,
               });
 
               closeModal();
