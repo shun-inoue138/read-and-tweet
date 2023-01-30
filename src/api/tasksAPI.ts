@@ -73,12 +73,12 @@ export const createTask = (task: Task) => {
   const modifiedTask = { ...task, categories: deduplication };
   return axiosClient.post(url, modifiedTask);
 };
-//todo:呼び出し側でisCompletedをtoggleさせるほうが良いかも？どちらにせよ統一すべき
+//サーバー側でisCompletedを入れ替える?
 export const completeTask = (id: string, task: Task) => {
   const url = `/tasks/${id}/complete`;
   return axiosClient.put(url, task);
 };
-export const undoCompleteTask = (id: string, task: Task) => {
+export const undoCompletedTask = (id: string, task: Task) => {
   const url = `/tasks/${id}/undo`;
   const undoTask = { ...task, isCompleted: false };
   return axiosClient.put(url, undoTask);
