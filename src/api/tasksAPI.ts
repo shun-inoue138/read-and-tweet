@@ -1,3 +1,4 @@
+import { Category } from "./../utils/types/Category";
 import { convertToHtmlDateInput } from "./../utils/functions/convertToHtmlDateInput";
 import axiosClient from "./axiosClient";
 import { Task } from "../utils/types/Task";
@@ -29,40 +30,56 @@ export const useGetTask = (id: string, reset?) => {
   const { data, error, mutate, isLoading } = useSWR<Task>(url, fetcher);
   return { task: data, error, mutate, isLoading };
 };
-
+//todo:要categoryAPIへ移動。
 export const useGetCategoryList = () => {
-  const url = "/categoryList";
-  const fetcher: Fetcher<{ id: number; name: string }[], string> = () => {
+  const url = "/categories";
+  const fetcher: Fetcher<{ id: string; name: string }[], string> = () => {
     return axiosClient.get(url).then((res) => res.data);
   };
   const { data, error, mutate, isLoading } = useSWR<
-    { id: number; name: string }[]
+    { id: string; name: string }[]
   >(url, fetcher);
   return { categoryList: data, error, mutate, isLoading };
 };
-export const createCategory = (name: string) => {
-  const url = "/categoryList";
+export const createCategory = (name: Category["name"]) => {
+  const url = "/categories";
   return axiosClient.post(url, { name });
 };
 
-export const deleteTask = (id: number) => {
+export const deleteTask = (id: string) => {
   const url = `/tasks/${id}`;
   return axiosClient.delete(url);
 };
-export const editTask = (id: number, task: Task) => {
+
+//categoriesの重複入力された場合、その場で警告を出さずに結果的に重複を削除して登録する
+const categoryNameDeduplication = (categories: Category["name"][]) => {
+  const deduplication = categories.filter((category, index, self) => {
+    return self.indexOf(category) === index;
+  });
+  return deduplication;
+};
+//todo:そもそも重複入力出来ないほうが良さそう。
+export const editTask = (id: string, task: Task) => {
   const url = `/tasks/${id}`;
-  return axiosClient.put(url, task);
+  const deduplication = categoryNameDeduplication(task.categories);
+  const modifiedTask = { ...task, categories: deduplication };
+  console.log(modifiedTask);
+
+  return axiosClient.put(url, modifiedTask);
 };
 export const createTask = (task: Task) => {
   const url = "/tasks";
-  return axiosClient.post(url, task);
+  const deduplication = categoryNameDeduplication(task.categories);
+  const modifiedTask = { ...task, categories: deduplication };
+  return axiosClient.post(url, modifiedTask);
 };
-export const completeTask = (id: number, task: Task) => {
-  const url = `/tasks/${id}/`;
+//サーバー側でisCompletedを入れ替える?
+export const completeTask = (id: string, task: Task) => {
+  const url = `/tasks/${id}/complete`;
   return axiosClient.put(url, task);
 };
-export const undoCompleteTask = (id: number, task: Task) => {
-  const url = `/tasks/${id}/`;
+export const undoCompletedTask = (id: string, task: Task) => {
+  const url = `/tasks/${id}/undo`;
   const undoTask = { ...task, isCompleted: false };
   return axiosClient.put(url, undoTask);
 };

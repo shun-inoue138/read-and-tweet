@@ -1,10 +1,7 @@
 import React from "react";
 import { createTask, editTask } from "src/api/tasksAPI";
 import { convertToHtmlDateInput } from "src/utils/functions/convertToHtmlDateInput";
-import {
-  getAfter7Days,
-  getOneWeekAfterDay,
-} from "src/utils/functions/getAfter7Days";
+import { getOneWeekAfterDay } from "src/utils/functions/getAfter7Days";
 import { getFormattedDatebyYmd } from "src/utils/functions/getFormattedDate";
 import { myToast } from "src/utils/functions/toastWrapper";
 

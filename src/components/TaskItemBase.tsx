@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 import {
   completeTask,
   deleteTask,
-  undoCompleteTask,
+  undoCompletedTask,
   useGetAllTasks,
 } from "src/api/tasksAPI";
 import { useConfirmationModal } from "src/hooks/useConfirmation";
@@ -24,7 +24,6 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
   const { mutate } = useGetAllTasks();
   const router = useRouter();
   const { MyModal, openModal, closeModal } = useModal();
-  const TweetTextAreaEL = React.useRef<HTMLTextAreaElement>(null);
   const [understandingRate, setUnderstandingRate] = React.useState<
     Task["understandingRate"]
   >(task.understandingRate || 1);
@@ -119,7 +118,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
                 setModalConfig(undefined);
                 console.log(ret);
                 if (ret === "yes") {
-                  await undoCompleteTask(id, task);
+                  await undoCompletedTask(id, task);
                   mutate();
                   myToast("未完了に戻しました。", "success");
                 }
@@ -141,7 +140,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
         </div>
       </Card>
       <MyModal>
-        <TweetTextArea ref={TweetTextAreaEL}>{postContent}</TweetTextArea>
+        <p className="font-mono font-medium">理解度</p>
         <UnderstandingRateStars
           understandingRate={understandingRate}
           setUnderstandingRate={setUnderstandingRate}
@@ -149,24 +148,15 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
         <div className="flex justify-end">
           <FilledButton
             buttonColor="blue"
-            onClick={() => {
-              if (!TweetTextAreaEL.current?.value.length) {
-                myToast("ツイート内容を入力してください", "error");
-                return;
-              } else if (TweetTextAreaEL.current?.value.length > 140) {
-                myToast("ツイート内容は140文字以内で入力してください", "error");
-                return;
-              }
-              completeTask(id, {
+            onClick={async () => {
+              await completeTask(id, {
                 ...task,
                 understandingRate,
                 isCompleted: true,
-                postContent: TweetTextAreaEL.current?.value,
               });
-
+              mutate();
               closeModal();
               myToast("保存されました。", "success");
-              mutate();
             }}
           >
             投稿する
