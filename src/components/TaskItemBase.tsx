@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 import {
   completeTask,
   deleteTask,
-  undoCompleteTask,
+  undoCompletedTask,
   useGetAllTasks,
 } from "src/api/tasksAPI";
 import { useConfirmationModal } from "src/hooks/useConfirmation";
@@ -118,7 +118,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
                 setModalConfig(undefined);
                 console.log(ret);
                 if (ret === "yes") {
-                  await undoCompleteTask(id, task);
+                  await undoCompletedTask(id, task);
                   mutate();
                   myToast("未完了に戻しました。", "success");
                 }
@@ -140,6 +140,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
         </div>
       </Card>
       <MyModal>
+        <p className="font-mono font-medium">理解度</p>
         <UnderstandingRateStars
           understandingRate={understandingRate}
           setUnderstandingRate={setUnderstandingRate}
@@ -147,16 +148,15 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
         <div className="flex justify-end">
           <FilledButton
             buttonColor="blue"
-            onClick={() => {
-              completeTask(id, {
+            onClick={async () => {
+              await completeTask(id, {
                 ...task,
                 understandingRate,
                 isCompleted: true,
               });
-
+              mutate();
               closeModal();
               myToast("保存されました。", "success");
-              mutate();
             }}
           >
             投稿する
