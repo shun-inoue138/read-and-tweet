@@ -157,6 +157,12 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
               mutate();
               closeModal();
               myToast("保存されました。", "success");
+              window.open(
+                `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  postContent
+                )}`,
+                "_blank"
+              );
             }}
           >
             投稿する
