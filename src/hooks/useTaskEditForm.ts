@@ -4,7 +4,7 @@ import { useGetTask } from "src/api/tasksAPI";
 import { taskObjectFactory } from "src/utils/functions/taskObjectFactory";
 import { Task } from "src/utils/types/Task";
 
-export const useTaskEditForm = (id: Task["_id"]) => {
+export const useTaskEditForm = (id: Task["_id"], isCompletePage: boolean) => {
   const {
     register,
     control,
@@ -16,6 +16,7 @@ export const useTaskEditForm = (id: Task["_id"]) => {
     mode: "onChange",
     reValidateMode: "onChange",
   });
+
   const { task, isLoading, error: fetchError } = useGetTask(id, reset);
 
   const { fields, append, remove } = useFieldArray({
@@ -23,7 +24,12 @@ export const useTaskEditForm = (id: Task["_id"]) => {
     name: "categories",
   });
 
-  const TaskEditObject = taskObjectFactory(register, errors, task);
+  const TaskEditObject = taskObjectFactory(
+    register,
+    errors,
+    task,
+    isCompletePage
+  );
 
   return {
     register,
