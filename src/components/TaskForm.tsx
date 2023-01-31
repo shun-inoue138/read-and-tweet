@@ -4,6 +4,7 @@ import { convertToHtmlDateInput } from "src/utils/functions/convertToHtmlDateInp
 import { getOneWeekAfterDay } from "src/utils/functions/getAfter7Days";
 import { getFormattedDatebyYmd } from "src/utils/functions/getFormattedDate";
 import { myToast } from "src/utils/functions/toastWrapper";
+import UnderstandingRateStars from "./UnderstandingRateStars";
 
 //todo:全体的に要リファクタリング
 const TaskForm = (props) => {
@@ -12,6 +13,7 @@ const TaskForm = (props) => {
     title,
     randomNote,
     dueDate,
+    understandingRate,
     postContent,
     id,
     handleSubmit,
@@ -23,8 +25,8 @@ const TaskForm = (props) => {
     fields,
     openModal,
     formType,
+    isCompletePage,
   } = props;
-  console.log(dueDate.defaultValue);
 
   const onSubmit = (data) => {
     if (formType === "edit") {
@@ -71,16 +73,21 @@ const TaskForm = (props) => {
         {...randomNote.registerReturn}
         defaultValue={randomNote.defaultValue}
       />
-      <input
-        type="date"
-        {...dueDate.registerReturn}
-        //fixme
-        defaultValue={
-          dueDate.defaultValue
-            ? convertToHtmlDateInput(dueDate.defaultValue)
-            : getOneWeekAfterDay()
-        }
-      />
+      {isCompletePage ? (
+        "ここに理解度"
+      ) : (
+        <input
+          type="date"
+          {...dueDate.registerReturn}
+          //fixme
+          defaultValue={
+            dueDate.defaultValue
+              ? convertToHtmlDateInput(dueDate.defaultValue)
+              : getOneWeekAfterDay()
+          }
+        />
+      )}
+
       <textarea
         placeholder={postContent.placeholder}
         {...postContent.registerReturn}
