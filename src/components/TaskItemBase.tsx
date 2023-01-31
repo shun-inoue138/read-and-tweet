@@ -164,7 +164,7 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
               window.open(
                 `https://twitter.com/intent/tweet?text=${encodeURIComponent(
                   postContent
-                )}`,
+                )}&url=${encodeURIComponent(url)}`,
                 "_blank"
               );
             }}
