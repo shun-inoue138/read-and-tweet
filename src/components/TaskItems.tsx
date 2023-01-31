@@ -5,6 +5,7 @@ import {
   filterTasksByIsCompleted,
   filterTasksByOverDue,
   filterTasksByUnderstandingRate,
+  filterTasksByUpdatedAt,
   filterTasksByWord,
 } from "src/utils/functions/filterTasks";
 
@@ -21,7 +22,8 @@ const TaskItems = ({ commonPageProps, specificPageProps }) => {
     tasks,
     commonPageProps.isCompletePage
   );
-
+  //updatedAtでソート
+  filteredTasks = filterTasksByUpdatedAt(filteredTasks);
   filteredTasks = filterTasksByWord(filteredTasks, commonPageProps.searchWord);
   console.log({ filteredTasks });
   //fix:ネスト解除したい
