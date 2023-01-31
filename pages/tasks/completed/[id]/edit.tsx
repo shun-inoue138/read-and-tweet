@@ -1,7 +1,12 @@
 import React from "react";
+import EditPageCommon from "src/components/EditPageCommon";
 
-const edit = () => {
-  return <div>edit</div>;
+const Edit = () => {
+  return (
+    <>
+      <EditPageCommon isCompletePage />
+    </>
+  );
 };
 
-export default edit;
+export default Edit;
