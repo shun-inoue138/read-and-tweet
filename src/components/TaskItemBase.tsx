@@ -18,7 +18,6 @@ import UnderstandingRateStars from "./UnderstandingRateStars";
 
 const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
   isCompletePage = false,
-  //fix:なぜtasks？taskであるべき
   ...task
 }) => {
   const { mutate } = useGetAllTasks();
@@ -36,11 +35,14 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
     dueDate,
     postContent,
     categories,
+    understandingRate: understandingRateFromTask,
   } = task;
   const editpageURL = isCompletePage
     ? `/tasks/completed/${id}/edit`
     : `/tasks/${id}/edit`;
   console.log(task);
+
+  console.log(understandingRate);
 
   const { Confirmation, openConfirmationModal, modalConfig, setModalConfig } =
     useConfirmationModal();
@@ -75,7 +77,9 @@ const TaskItemBase: FC<Task & { isCompletePage?: boolean }> = ({
           <div className="flex gap-2 items-center">
             <span>理解度</span>
 
-            <UnderstandingRateStars understandingRate={understandingRate} />
+            <UnderstandingRateStars
+              understandingRate={understandingRateFromTask || understandingRate}
+            />
           </div>
         ) : (
           //fix?
