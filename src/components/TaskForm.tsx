@@ -1,9 +1,10 @@
 import React from "react";
-import { createTask, editTask } from "src/api/tasksAPI";
+import { createTask, editTask, useGetAllTasks } from "src/api/tasksAPI";
 import { convertToHtmlDateInput } from "src/utils/functions/convertToHtmlDateInput";
 import { getOneWeekAfterDay } from "src/utils/functions/getAfter7Days";
 import { getFormattedDatebyYmd } from "src/utils/functions/getFormattedDate";
 import { myToast } from "src/utils/functions/toastWrapper";
+import UnderstandingRateStars from "./UnderstandingRateStars";
 
 //todo:全体的に要リファクタリング
 const TaskForm = (props) => {
@@ -12,6 +13,7 @@ const TaskForm = (props) => {
     title,
     randomNote,
     dueDate,
+    understandingRate,
     postContent,
     id,
     handleSubmit,
@@ -23,30 +25,34 @@ const TaskForm = (props) => {
     fields,
     openModal,
     formType,
+    isCompletePage,
   } = props;
-  console.log(dueDate.defaultValue);
 
-  const onSubmit = (data) => {
+  //edit及びcreate完了直後にrevalidateするため
+  const { mutate } = useGetAllTasks();
+
+  const onSubmit = async (data) => {
     if (formType === "edit") {
-      editTask(id, data)
-        .then(() => {
-          router.push("/tasks");
-          myToast("タスクを編集しました", "success");
-        })
-        .catch((error) => {
-          console.log(error);
-          myToast("タスクの編集に失敗しました", "error");
-        });
+      try {
+        await editTask(id, data);
+        await mutate();
+        const url = isCompletePage ? "/tasks/completed" : "/tasks";
+        router.push(url);
+        myToast("タスクを編集しました", "success");
+      } catch (error) {
+        console.log(error);
+        myToast("タスクの編集に失敗しました", "error");
+      }
     } else if (formType === "create") {
-      createTask({ ...data, isCompleted: false })
-        .then(() => {
-          router.push("/tasks");
-          myToast("タスクを作成しました", "success");
-        })
-        .catch((error) => {
-          console.log(error);
-          myToast("タスクの作成に失敗しました", "error");
-        });
+      try {
+        await createTask({ ...data, isCompleted: false });
+        await mutate();
+        router.push("/tasks");
+        myToast("タスクを作成しました", "success");
+      } catch (error) {
+        console.log(error);
+        myToast("タスクの作成に失敗しました", "error");
+      }
     }
   };
 
@@ -71,16 +77,36 @@ const TaskForm = (props) => {
         {...randomNote.registerReturn}
         defaultValue={randomNote.defaultValue}
       />
-      <input
-        type="date"
-        {...dueDate.registerReturn}
-        //fixme
-        defaultValue={
-          dueDate.defaultValue
-            ? convertToHtmlDateInput(dueDate.defaultValue)
-            : getOneWeekAfterDay()
-        }
-      />
+      {isCompletePage ? (
+        <label>
+          <div>理解度</div>
+          <select
+            defaultValue={understandingRate.defaultValue}
+            {...understandingRate.registerReturn}
+          >
+            {/* fix:magic number */}
+            {Array.from({ length: 5 }, (_, i) => i + 1).map((number) => {
+              return (
+                <option key={number} value={number}>
+                  {number}
+                </option>
+              );
+            })}
+          </select>
+        </label>
+      ) : (
+        <input
+          type="date"
+          {...dueDate.registerReturn}
+          //fixme
+          defaultValue={
+            dueDate.defaultValue
+              ? convertToHtmlDateInput(dueDate.defaultValue)
+              : getOneWeekAfterDay()
+          }
+        />
+      )}
+
       <textarea
         placeholder={postContent.placeholder}
         {...postContent.registerReturn}

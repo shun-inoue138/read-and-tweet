@@ -1,5 +1,6 @@
 import { Router, useRouter } from "next/router";
 import React from "react";
+import useUserStore from "src/stores/useUserStore";
 import {
   Default_Input_Due_Days,
   Default_Input_Understanding_Rate,
@@ -7,6 +8,7 @@ import {
 
 const Header = ({ commonPageProps, specificPageProps }) => {
   const router = useRouter();
+  const resetCurrentUser = useUserStore((state) => state.resetCurrentUser);
   console.log({ commonPageProps });
 
   const [inputDueDays, setInputDueDays] = React.useState<number>(
@@ -93,6 +95,7 @@ const Header = ({ commonPageProps, specificPageProps }) => {
           </button>
         </div>
       )}
+      <button onClick={resetCurrentUser}>ログアウト</button>
     </div>
   );
 };

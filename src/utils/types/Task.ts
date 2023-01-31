@@ -8,4 +8,6 @@ export type Task = {
   understandingRate: 1 | 2 | 3 | 4 | 5;
   dueDate: string;
   isCompleted: boolean;
+  updatedAt: string;
+  createdAt: string;
 };

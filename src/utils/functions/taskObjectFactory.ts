@@ -1,5 +1,6 @@
-export const taskObjectFactory = (register, errors, task) => {
-  return {
+//isCompletePageがtrueなら完了タスクフォーム用のオブジェクトを返す
+export const taskObjectFactory = (register, errors, task, isCompletePage) => {
+  const common = {
     URL: {
       placeholder: "URLを入力してください",
       type: "text",
@@ -24,18 +25,33 @@ export const taskObjectFactory = (register, errors, task) => {
       errors: errors.randomNote?.message,
       defaultValue: task?.randomNote,
     },
-    dueDate: {
-      type: "date",
-      registerReturn: register("dueDate"),
-      errors: errors.dueDate?.message,
-      defaultValue: task?.dueDate,
-    },
     postContent: {
       placeholder: "投稿内容",
       type: "text",
       registerReturn: register("postContent"),
       errors: errors.postContent?.message,
       defaultValue: task?.postContent,
+    },
+  };
+
+  if (isCompletePage) {
+    return {
+      ...common,
+      understandingRate: {
+        type: "number",
+        registerReturn: register("understandingRate"),
+        errors: errors.understandingRate?.message,
+        defaultValue: task?.understandingRate,
+      },
+    };
+  }
+  return {
+    ...common,
+    dueDate: {
+      type: "date",
+      registerReturn: register("dueDate"),
+      errors: errors.dueDate?.message,
+      defaultValue: task?.dueDate,
     },
   };
 };

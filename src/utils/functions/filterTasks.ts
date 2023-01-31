@@ -1,5 +1,13 @@
 import { Task } from "../types/Task";
 
+export const filterTasksByUpdatedAt = (tasks: Task[]) => {
+  return tasks.sort((a, b) => {
+    const aDate = new Date(a.updatedAt);
+    const bDate = new Date(b.updatedAt);
+    return bDate.getTime() - aDate.getTime();
+  });
+};
+
 export const filterTasksByWord = (
   tasks: Task[],
   searchWord: string
