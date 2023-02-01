@@ -16,8 +16,18 @@ import Card from "./Card";
 import TweetTextArea from "./TweetTextArea";
 import UnderstandingRateStars from "./UnderstandingRateStars";
 
-const TaskItem: FC<Task & { isCompletePage: boolean }> = ({
+type Props = Task & {
+  isCompletePage: boolean;
+  filterCategories: { isFilter: boolean; selectedCategory: string };
+  setFilterCategories: React.Dispatch<
+    React.SetStateAction<Props["filterCategories"]>
+  >;
+};
+
+const TaskItem: FC<Props> = ({
   isCompletePage,
+  filterCategories,
+  setFilterCategories,
   ...task
 }) => {
   const { mutate } = useGetAllTasks();
