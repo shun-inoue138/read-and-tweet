@@ -1,4 +1,4 @@
-import { Category } from "./../utils/types/Category";
+import { Category } from "../utils/types/Category";
 import useSWR from "swr";
 import { Fetcher } from "swr";
 import axiosClient from "./axiosClient";

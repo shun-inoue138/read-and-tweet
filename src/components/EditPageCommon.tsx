@@ -8,7 +8,7 @@ import { useModal } from "src/hooks/useModal";
 import { mutate } from "swr";
 import TaskForm from "src/components/TaskForm";
 import CategoryModalContent from "src/components/CategoryModalContent";
-import { useGetCategoryList } from "src/api/categoryAPI";
+import { useGetCategoryList } from "src/api/categoriesAPI";
 
 const EditPageCommon: FC<{ isCompletePage?: boolean }> = ({
   isCompletePage = false,

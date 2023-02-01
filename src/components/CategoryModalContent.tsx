@@ -1,5 +1,5 @@
 import React from "react";
-import { createCategory } from "src/api/categoryAPI";
+import { createCategory } from "src/api/categoriesAPI";
 import useUserStore from "src/stores/useUserStore";
 import { myToast } from "src/utils/functions/toastWrapper";
 
