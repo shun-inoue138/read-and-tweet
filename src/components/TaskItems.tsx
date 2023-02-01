@@ -10,14 +10,15 @@ import {
 } from "src/utils/functions/filterTasks";
 
 import useSWR from "swr";
-import CompletedTaskItem from "./CompletedTaskItem";
-import TaskItem from "./TaskItemBase";
+import TaskItem from "./TaskItem";
 
 const TaskItems = ({ commonPageProps, specificPageProps }) => {
   const { tasks, error, mutate, isLoading } = useGetAllTasks();
+
   if (isLoading) return <div>loading...</div>;
   if (error) return <div>error</div>;
   if (!tasks) return <div>no tasks</div>;
+
   let filteredTasks = filterTasksByIsCompleted(
     tasks,
     commonPageProps.isCompletePage
@@ -50,11 +51,7 @@ const TaskItems = ({ commonPageProps, specificPageProps }) => {
     <div>
       {filteredTasks?.map((task) => (
         <div key={task.id}>
-          {commonPageProps.isCompletePage ? (
-            <CompletedTaskItem {...task} />
-          ) : (
-            <TaskItem {...task} />
-          )}
+          <TaskItem {...task} isCompletePage={commonPageProps.isCompletePage} />
         </div>
       ))}
     </div>
