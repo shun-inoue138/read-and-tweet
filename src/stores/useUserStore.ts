@@ -3,11 +3,9 @@ import { User } from "src/utils/types/User";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-type IdOmitUser = Omit<User, "_id">;
-
 type UserStoreType = {
-  currentUser: IdOmitUser;
-  setCurrentUser: (user: IdOmitUser) => void;
+  currentUser: User;
+  setCurrentUser: (user: User) => void;
   resetCurrentUser: () => void;
 };
 
@@ -16,13 +14,16 @@ const useUserStore = create<UserStoreType>()(
     persist(
       (set) => ({
         currentUser: {
+          _id: "",
           username: "",
           email: "",
           password: "",
         },
         setCurrentUser: (user) => set({ currentUser: user }),
         resetCurrentUser: () =>
-          set({ currentUser: { username: "", email: "", password: "" } }),
+          set({
+            currentUser: { _id: "", username: "", email: "", password: "" },
+          }),
       }),
       {
         name: "user",
