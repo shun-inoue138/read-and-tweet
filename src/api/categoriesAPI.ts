@@ -2,8 +2,8 @@ import { Category } from "../utils/types/Category";
 import useSWR from "swr";
 import { Fetcher } from "swr";
 import axiosClient from "./axiosClient";
-import { User } from "src/utils/types/User";
 import useUserStore from "src/stores/useUserStore";
+
 export const useGetCategoryList = () => {
   const user_id = useUserStore((state) => state.currentUser._id);
   const url = `/categories?user_id=${user_id}`;
