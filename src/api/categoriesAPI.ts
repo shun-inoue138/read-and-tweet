@@ -15,10 +15,12 @@ export const useGetCategoryList = () => {
   >(url, fetcher);
   return { categoryList: data, error, mutate, isLoading };
 };
-export const createCategory = (
-  name: Category["name"],
-  user_id: User["_id"]
-) => {
-  const url = "/categories";
-  return axiosClient.post(url, { name, user_id });
+
+export const useCreateCategory = () => {
+  const user_id = useUserStore((state) => state.currentUser._id);
+  const createCategory = (name: Category["name"]) => {
+    const url = "/categories";
+    return axiosClient.post(url, { name, user_id });
+  };
+  return { createCategory };
 };

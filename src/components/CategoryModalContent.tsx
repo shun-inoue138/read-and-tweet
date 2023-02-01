@@ -1,11 +1,11 @@
 import React from "react";
-import { createCategory } from "src/api/categoriesAPI";
+import { useCreateCategory } from "src/api/categoriesAPI";
 import useUserStore from "src/stores/useUserStore";
 import { myToast } from "src/utils/functions/toastWrapper";
 
 const CategoryModalContent = ({ closeModal, mutate }) => {
   const categoryInputRef = React.useRef<HTMLInputElement>(null);
-  const user_id = useUserStore((state) => state.currentUser._id);
+  const { createCategory } = useCreateCategory();
 
   return (
     <div>
@@ -14,7 +14,7 @@ const CategoryModalContent = ({ closeModal, mutate }) => {
         onClick={() => {
           const categoryName = categoryInputRef.current?.value as string;
           categoryName &&
-            createCategory(categoryName, user_id)
+            createCategory(categoryName)
               .then(() => {
                 myToast("カテゴリーを追加しました", "success");
                 closeModal();
