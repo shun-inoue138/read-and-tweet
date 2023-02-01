@@ -1,5 +1,5 @@
 import React from "react";
-import { createTask, editTask, useGetAllTasks } from "src/api/tasksAPI";
+import { editTask, useCreateTask, useGetAllTasks } from "src/api/tasksAPI";
 import { convertToHtmlDateInput } from "src/utils/functions/convertToHtmlDateInput";
 import { getOneWeekAfterDay } from "src/utils/functions/getAfter7Days";
 import { getFormattedDatebyYmd } from "src/utils/functions/getFormattedDate";
@@ -8,6 +8,7 @@ import UnderstandingRateStars from "./UnderstandingRateStars";
 
 //todo:全体的に要リファクタリング
 const TaskForm = (props) => {
+  const { createTask } = useCreateTask();
   const {
     URL,
     title,

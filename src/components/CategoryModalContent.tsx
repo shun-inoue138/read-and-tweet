@@ -1,9 +1,11 @@
 import React from "react";
-import { createCategory } from "src/api/tasksAPI";
+import { useCreateCategory } from "src/api/categoriesAPI";
+import useUserStore from "src/stores/useUserStore";
 import { myToast } from "src/utils/functions/toastWrapper";
 
 const CategoryModalContent = ({ closeModal, mutate }) => {
   const categoryInputRef = React.useRef<HTMLInputElement>(null);
+  const { createCategory } = useCreateCategory();
 
   return (
     <div>

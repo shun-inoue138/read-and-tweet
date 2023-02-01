@@ -3,9 +3,12 @@ import { convertToHtmlDateInput } from "./../utils/functions/convertToHtmlDateIn
 import axiosClient from "./axiosClient";
 import { Task } from "../utils/types/Task";
 import useSWR, { Fetcher } from "swr";
+import useUserStore from "src/stores/useUserStore";
 
 export const useGetAllTasks = () => {
-  const url = "/tasks";
+  const user_id = useUserStore((state) => state.currentUser._id);
+
+  const url = `/tasks?user_id=${user_id}`;
   const fetcher: Fetcher<Task[], string> = () => {
     return axiosClient.get(url).then((res) => res.data);
   };
@@ -30,21 +33,6 @@ export const useGetTask = (id: string, reset?) => {
   const { data, error, mutate, isLoading } = useSWR<Task>(url, fetcher);
   return { task: data, error, mutate, isLoading };
 };
-//todo:要categoryAPIへ移動。
-export const useGetCategoryList = () => {
-  const url = "/categories";
-  const fetcher: Fetcher<{ id: string; name: string }[], string> = () => {
-    return axiosClient.get(url).then((res) => res.data);
-  };
-  const { data, error, mutate, isLoading } = useSWR<
-    { id: string; name: string }[]
-  >(url, fetcher);
-  return { categoryList: data, error, mutate, isLoading };
-};
-export const createCategory = (name: Category["name"]) => {
-  const url = "/categories";
-  return axiosClient.post(url, { name });
-};
 
 export const deleteTask = (id: string) => {
   const url = `/tasks/${id}`;
@@ -58,7 +46,7 @@ const categoryNameDeduplication = (categories: Category["name"][]) => {
   });
   return deduplication;
 };
-//todo:そもそも重複入力出来ないほうが良さそう。
+//todo:そもそも画面上で重複入力出来ないほうが良さそう。
 export const editTask = (id: string, task: Task) => {
   const url = `/tasks/${id}`;
   const deduplication = categoryNameDeduplication(task.categories);
@@ -67,11 +55,16 @@ export const editTask = (id: string, task: Task) => {
 
   return axiosClient.put(url, modifiedTask);
 };
-export const createTask = (task: Task) => {
-  const url = "/tasks";
-  const deduplication = categoryNameDeduplication(task.categories);
-  const modifiedTask = { ...task, categories: deduplication };
-  return axiosClient.post(url, modifiedTask);
+export const useCreateTask = () => {
+  const user_id = useUserStore((state) => state.currentUser._id);
+  const createTask = (task: Task) => {
+    const url = "/tasks";
+    1;
+    const deduplication = categoryNameDeduplication(task.categories);
+    const modifiedTask = { ...task, categories: deduplication, user_id };
+    return axiosClient.post(url, modifiedTask);
+  };
+  return { createTask };
 };
 //サーバー側でisCompletedを入れ替える?
 export const completeTask = (id: string, task: Task) => {

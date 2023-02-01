@@ -1,11 +1,6 @@
 import { useRouter } from "next/router";
 import React, { FC } from "react";
-import {
-  createCategory,
-  editTask,
-  useGetCategoryList,
-  useGetTask,
-} from "src/api/tasksAPI";
+import { editTask, useGetTask } from "src/api/tasksAPI";
 import { useTaskEditForm } from "src/hooks/useTaskEditForm";
 import { myToast } from "src/utils/functions/toastWrapper";
 import { useFieldArray, useForm, Controller } from "react-hook-form";
@@ -13,6 +8,7 @@ import { useModal } from "src/hooks/useModal";
 import { mutate } from "swr";
 import TaskForm from "src/components/TaskForm";
 import CategoryModalContent from "src/components/CategoryModalContent";
+import { useGetCategoryList } from "src/api/categoriesAPI";
 
 const EditPageCommon: FC<{ isCompletePage?: boolean }> = ({
   isCompletePage = false,
