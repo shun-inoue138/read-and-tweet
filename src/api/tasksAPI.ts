@@ -30,21 +30,6 @@ export const useGetTask = (id: string, reset?) => {
   const { data, error, mutate, isLoading } = useSWR<Task>(url, fetcher);
   return { task: data, error, mutate, isLoading };
 };
-//todo:要categoryAPIへ移動。
-export const useGetCategoryList = () => {
-  const url = "/categories";
-  const fetcher: Fetcher<{ id: string; name: string }[], string> = () => {
-    return axiosClient.get(url).then((res) => res.data);
-  };
-  const { data, error, mutate, isLoading } = useSWR<
-    { id: string; name: string }[]
-  >(url, fetcher);
-  return { categoryList: data, error, mutate, isLoading };
-};
-export const createCategory = (name: Category["name"]) => {
-  const url = "/categories";
-  return axiosClient.post(url, { name });
-};
 
 export const deleteTask = (id: string) => {
   const url = `/tasks/${id}`;
