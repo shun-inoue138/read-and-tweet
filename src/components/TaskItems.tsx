@@ -8,12 +8,17 @@ import {
   filterTasksByUpdatedAt,
   filterTasksByWord,
 } from "src/utils/functions/filterTasks";
+import { Category } from "src/utils/types/Category";
 
 import useSWR from "swr";
 import TaskItem from "./TaskItem";
 
 const TaskItems = ({ commonPageProps, specificPageProps }) => {
   const { tasks, error, mutate, isLoading } = useGetAllTasks();
+  const [filterCategories, setFilterCategories] = React.useState<{
+    isFilter: boolean;
+    selectedCategory: Category["name"];
+  }>({ isFilter: false, selectedCategory: "" });
 
   if (isLoading) return <div>loading...</div>;
   if (error) return <div>error</div>;
@@ -26,7 +31,10 @@ const TaskItems = ({ commonPageProps, specificPageProps }) => {
   //updatedAtでソート
   filteredTasks = filterTasksByUpdatedAt(filteredTasks);
   filteredTasks = filterTasksByWord(filteredTasks, commonPageProps.searchWord);
-  console.log({ filteredTasks });
+  filteredTasks = filterTasksByCategory(
+    filteredTasks,
+    filterCategories.selectedCategory
+  );
   //fix:ネスト解除したい
   if (!commonPageProps.isCompletePage) {
     if (specificPageProps.filterDueDays?.isFilter) {
@@ -48,10 +56,15 @@ const TaskItems = ({ commonPageProps, specificPageProps }) => {
   }
 
   return (
-    <div>
+    <div
       {filteredTasks?.map((task) => (
         <div key={task.id}>
-          <TaskItem {...task} isCompletePage={commonPageProps.isCompletePage} />
+          <TaskItem
+            {...task}
+            isCompletePage={commonPageProps.isCompletePage}
+            filterCategories={filterCategories}
+            setFilterCategories={setFilterCategories}
+          />
         </div>
       ))}
     </div>
