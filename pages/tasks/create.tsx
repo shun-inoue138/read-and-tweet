@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { createCategory, useGetCategoryList } from "src/api/tasksAPI";
+import { useGetCategoryList } from "src/api/categoryAPI";
 import CategoryModalContent from "src/components/CategoryModalContent";
 import TaskForm from "src/components/TaskForm";
 import { useModal } from "src/hooks/useModal";
