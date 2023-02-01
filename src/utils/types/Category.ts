@@ -2,4 +2,5 @@
 export type Category = {
   _id: string;
   name: string;
+  user_id: string;
 };
